@@ -1,0 +1,61 @@
+erDiagram
+    Positions {
+        int PositionId PK
+        text Name
+    }
+
+    Employees {
+        int EmployeeId PK
+        text FullName
+        text Address
+        date BirthDate
+        text Degree
+        date HireDate
+        date LeaveDate
+        text Email
+        text PhoneNumber
+    }
+
+    Projects {
+        int ProjectId PK
+        text ProjectName
+        date StartDate
+        date EndDate
+        PROJECTSTATUS ProjectStatus
+    }
+
+    Assignments {
+        int AssignmentId PK
+        int EmployeeId FK
+        int ProjectId FK
+        int PositionId FK
+        int WeeklyHours
+        date StartDate
+        date EndDate
+    }
+
+    PaymentPolicies {
+        int PolicyId PK
+        POLICY PolicyType
+        boolean IsFixed
+        numeric Amount
+        jsonb Info
+    }
+
+    Payments {
+        int PaymentId PK
+        int AssignmentId FK
+        int PolicyId FK
+        numeric Amount
+        date PeriodStart
+        date PeriodEnd
+        boolean IsTransactioned
+        date PaymentDate
+    }
+
+    %% Relationships
+    Employees ||--o{ Assignments : ""
+    Projects ||--o{ Assignments : ""
+    Positions ||--o{ Assignments : ""
+    Assignments ||--o{ Payments : ""
+    PaymentPolicies ||--o{ Payments : ""
