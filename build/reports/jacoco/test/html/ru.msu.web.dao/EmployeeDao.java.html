@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">web</a> &gt; <a href="index.source.html" class="el_package">ru.msu.web.dao</a> &gt; <span class="el_source">EmployeeDao.java</span></div><h1>EmployeeDao.java</h1><pre class="source lang-java linenums">package ru.msu.web.dao;
+
+import org.springframework.stereotype.Service;
+import ru.msu.web.entity.Employee;
+import ru.msu.web.repository.AssignmentRepository;
+import ru.msu.web.repository.EmployeeRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/*
+ * DAO для работы с сотрудниками
+ * Поддерживает операции страницы &quot;Список сотрудников&quot; и &quot;Информация о сотруднике&quot;
+ */
+@Service
+public class EmployeeDao {
+
+    private final EmployeeRepository employeeRepository;
+    private final AssignmentRepository assignmentRepository;
+
+    public EmployeeDao(EmployeeRepository employeeRepository,
+<span class="fc" id="L23">                       AssignmentRepository assignmentRepository) {</span>
+<span class="fc" id="L24">        this.employeeRepository = employeeRepository;</span>
+<span class="fc" id="L25">        this.assignmentRepository = assignmentRepository;</span>
+<span class="fc" id="L26">    }</span>
+
+    /* Все сотрудники  */
+    public List&lt;Employee&gt; findAll() {
+<span class="fc" id="L30">        return employeeRepository.findAll();</span>
+    }
+
+    /* Только действующие сотрудники */
+    public List&lt;Employee&gt; findActiveEmployees() {
+<span class="fc" id="L35">        return employeeRepository.findByLeaveDateIsNull();</span>
+    }
+
+    /* Только уволенные сотрудники */
+    public List&lt;Employee&gt; findFormerEmployees() {
+<span class="fc" id="L40">        return employeeRepository.findByLeaveDateIsNotNull();</span>
+    }
+
+    /* Поиск по ФИО */
+    public List&lt;Employee&gt; searchByName(String query) {
+<span class="fc" id="L45">        return employeeRepository.findByFullNameContainingIgnoreCase(query);</span>
+    }
+
+    /* Фильтр по стажу */
+    public List&lt;Employee&gt; findBySeniorityRange(int minYears, int maxYears) {
+<span class="fc" id="L50">        return employeeRepository.findByLeaveDateIsNull().stream()</span>
+<span class="fc" id="L51">                .filter(e -&gt; {</span>
+<span class="fc" id="L52">                    long years = e.getSeniorityYears();</span>
+<span class="fc bfc" id="L53" title="All 4 branches covered.">                    return years &gt;= minYears &amp;&amp; years &lt;= maxYears;</span>
+                })
+<span class="fc" id="L55">                .collect(Collectors.toList());</span>
+    }
+
+    /* Сотрудники, имеющие текущее назначение на указанную должность */
+    public List&lt;Employee&gt; findByCurrentPosition(Long positionId) {
+<span class="fc" id="L60">        return employeeRepository.findByCurrentPositionId(positionId);</span>
+    }
+
+    /* Сотрудники, участвующие (или участвовавшие) в проекте */
+    public List&lt;Employee&gt; findByProject(Long projectId) {
+<span class="fc" id="L65">        return employeeRepository.findByProjectId(projectId);</span>
+    }
+
+    /* Получить сотрудника по ID. Возвращает null, если не найден */
+    public Employee findById(Long id) {
+<span class="fc" id="L70">        return employeeRepository.findById(id).orElse(null);</span>
+    }
+
+    /* Получить сотрудника по email. Возвращает null, если не найден */
+    public Employee findByEmail(String email) {
+<span class="fc" id="L75">        return employeeRepository.findByEmail(email).orElse(null);</span>
+    }
+
+    /* Сохранить (создать или обновить) сотрудника */
+    public Employee save(Employee employee) {
+<span class="fc" id="L80">        return employeeRepository.save(employee);</span>
+    }
+
+    /* Увольнение сотрудника: установка даты увольнения и закрытие всех активных назначений */
+    public void fireEmployee(Long employeeId, LocalDate leaveDate) {
+<span class="fc" id="L85">        Employee employee = employeeRepository.findById(employeeId)</span>
+<span class="pc" id="L86">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Employee not found: &quot; + employeeId));</span>
+<span class="fc" id="L87">        employee.setLeaveDate(leaveDate);</span>
+<span class="fc" id="L88">        employeeRepository.save(employee);</span>
+
+<span class="fc" id="L90">        assignmentRepository.findByEmployeeAndEndDateIsNull(employee).forEach(a -&gt; {</span>
+<span class="fc" id="L91">            a.setEndDate(leaveDate);</span>
+<span class="fc" id="L92">            assignmentRepository.save(a);</span>
+<span class="fc" id="L93">        });</span>
+<span class="fc" id="L94">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

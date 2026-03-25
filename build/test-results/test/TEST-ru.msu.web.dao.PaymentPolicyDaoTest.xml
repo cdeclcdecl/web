@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.dao.PaymentPolicyDaoTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-03-24T22:34:24" hostname="cdecl" time="0.076">
+  <properties/>
+  <testcase name="findByType_calendarBonus()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.009"/>
+  <testcase name="findByAmountRange_found()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
+  <testcase name="findByAmountRange_notFound()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.004"/>
+  <testcase name="save_createsNewPolicy()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.005"/>
+  <testcase name="findByType_seniority()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.007"/>
+  <testcase name="findByType_salary()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.012"/>
+  <testcase name="findById_found()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.007"/>
+  <testcase name="findAll_returnsAllPolicies()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.012"/>
+  <system-out><![CDATA[2026-03-25T01:34:24.640+03:00  INFO 1538687 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PaymentPolicyDaoTest]: PaymentPolicyDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-25T01:34:24.643+03:00  INFO 1538687 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PaymentPolicyDaoTest
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.policytype=?
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.amount between ? and ?
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.amount between ? and ?
+Hibernate: 
+    insert 
+    into
+        paymentpolicies
+        (amount, isfixed, info, policytype) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.policyid=?
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.policytype=?
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.policytype=?
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0 
+    where
+        pp1_0.policyid=?
+Hibernate: 
+    select
+        pp1_0.policyid,
+        pp1_0.amount,
+        pp1_0.isfixed,
+        pp1_0.info,
+        pp1_0.policytype 
+    from
+        paymentpolicies pp1_0
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

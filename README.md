@@ -432,3 +432,27 @@
 С помощью JaCoCo собрано покрытие кода по тестам, оно получилось весьма неплохим (83% инструкий, 100% ветвей)
 
 ![coverage](pics/coverage.png)
+
+### Покрытие++
+
+Для упрощения задачи просто убрал build/ из .gitignore, все файлы с покрытием каждого из дао теперь доступны (ссылки на них и скриншоты ниже)
+
+Чтобы ознакомиться со всеми файлами, доступны html отчёты от JaCoCo по директории build/reports/jacoco/test/html/ru.msu.web и build/reports/jacoco/test/html/ru.msu.web.dao
+
+Ниже привожу только те, в которых покрытие не 100%
+
+#### 1. WebApplication
+
+[Отчёт от JaCoCo](./build/reports/jacoco/test/html/ru.msu.web/WebApplication.java.html)
+
+Здесь достаточно очевидно, потому что это совсем не DAO класс, а основной интерфейс запуска приложения, и он не тестировался, но в отчёт вошёл
+
+#### 2. AssignmentDao
+
+[Отчёт от JaCoCo](./build/reports/jacoco/test/html/ru.msu.web.dao/AssignmentDao.java.html)
+
+
+
+#### 3. EmployeeDao
+
+[Отчёт от JaCoCo](./build/reports/jacoco/test/html/ru.msu.web.dao/EmployeeDao.java.html)

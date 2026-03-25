@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">web</a> &gt; <a href="index.source.html" class="el_package">ru.msu.web.dao</a> &gt; <span class="el_source">PaymentDao.java</span></div><h1>PaymentDao.java</h1><pre class="source lang-java linenums">package ru.msu.web.dao;
+
+import org.springframework.stereotype.Service;
+import ru.msu.web.entity.Payment;
+import ru.msu.web.entity.PolicyType;
+import ru.msu.web.repository.PaymentRepository;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+/*
+ * DAO для работы с выплатами
+ * Поддерживает операции страницы &quot;История начислений&quot; и формирование отчётов
+ */
+@Service
+public class PaymentDao {
+
+    private final PaymentRepository paymentRepository;
+
+<span class="fc" id="L21">    public PaymentDao(PaymentRepository paymentRepository) {</span>
+<span class="fc" id="L22">        this.paymentRepository = paymentRepository;</span>
+<span class="fc" id="L23">    }</span>
+
+    /* Все выплаты */
+    public List&lt;Payment&gt; findAll() {
+<span class="fc" id="L27">        return paymentRepository.findAll();</span>
+    }
+
+    /* Выплаты конкретного сотрудника (через назначения) */
+    public List&lt;Payment&gt; findByEmployee(Long employeeId) {
+<span class="fc" id="L32">        return paymentRepository.findByEmployeeId(employeeId);</span>
+    }
+
+    /* Выплаты по диапазону дат выплаты */
+    public List&lt;Payment&gt; findByDateRange(LocalDate from, LocalDate to) {
+<span class="fc" id="L37">        return paymentRepository.findByPaymentDateBetween(from, to);</span>
+    }
+
+    /* Выплаты по диапазону суммы */
+    public List&lt;Payment&gt; findByAmountRange(BigDecimal min, BigDecimal max) {
+<span class="fc" id="L42">        return paymentRepository.findByAmountBetween(min, max);</span>
+    }
+
+    /* Выплаты по типу политики */
+    public List&lt;Payment&gt; findByPolicyType(PolicyType type) {
+<span class="fc" id="L47">        return paymentRepository.findByPolicyType(type);</span>
+    }
+
+    /* Невыплаченные суммы */
+    public List&lt;Payment&gt; findUnpaid() {
+<span class="fc" id="L52">        return paymentRepository.findByTransactioned(false);</span>
+    }
+
+    /* Общая сумма выплат сотруднику за период (по периоду начисления) */
+    public BigDecimal getTotalByEmployeeAndPeriod(Long employeeId, LocalDate from, LocalDate to) {
+<span class="fc" id="L57">        return paymentRepository.sumByEmployeeIdAndPeriod(employeeId, from, to);</span>
+    }
+
+    /* Общая сумма выплат по назначению */
+    public BigDecimal getTotalByAssignment(Long assignmentId) {
+<span class="fc" id="L62">        return paymentRepository.sumByAssignmentId(assignmentId);</span>
+    }
+
+    /* Получить выплату по ID */
+    public Payment findById(Long id) {
+<span class="fc" id="L67">        return paymentRepository.findById(id).orElse(null);</span>
+    }
+
+    /* Сохранить (создать или обновить) выплату */
+    public Payment save(Payment payment) {
+<span class="fc" id="L72">        return paymentRepository.save(payment);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

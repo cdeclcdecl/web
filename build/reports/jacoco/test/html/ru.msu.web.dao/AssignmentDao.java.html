@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssignmentDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">web</a> &gt; <a href="index.source.html" class="el_package">ru.msu.web.dao</a> &gt; <span class="el_source">AssignmentDao.java</span></div><h1>AssignmentDao.java</h1><pre class="source lang-java linenums">package ru.msu.web.dao;
+
+import org.springframework.stereotype.Service;
+import ru.msu.web.entity.*;
+import ru.msu.web.repository.AssignmentRepository;
+import ru.msu.web.repository.EmployeeRepository;
+import ru.msu.web.repository.PositionRepository;
+import ru.msu.web.repository.ProjectRepository;
+
+import java.time.LocalDate;
+import java.util.List;
+
+// DAO для работы с назначениями сотрудников
+
+@Service
+public class AssignmentDao {
+
+    private final AssignmentRepository assignmentRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ProjectRepository projectRepository;
+    private final PositionRepository positionRepository;
+
+    public AssignmentDao(AssignmentRepository assignmentRepository,
+                         EmployeeRepository employeeRepository,
+                         ProjectRepository projectRepository,
+<span class="fc" id="L26">                         PositionRepository positionRepository) {</span>
+<span class="fc" id="L27">        this.assignmentRepository = assignmentRepository;</span>
+<span class="fc" id="L28">        this.employeeRepository = employeeRepository;</span>
+<span class="fc" id="L29">        this.projectRepository = projectRepository;</span>
+<span class="fc" id="L30">        this.positionRepository = positionRepository;</span>
+<span class="fc" id="L31">    }</span>
+
+    /* Все назначения сотрудника */
+    public List&lt;Assignment&gt; getEmployeeAssignments(Long employeeId) {
+<span class="fc" id="L35">        return assignmentRepository.findAllAssignmentsByEmployeeId(employeeId);</span>
+    }
+
+    /* Текущие назначения сотрудника */
+    public List&lt;Assignment&gt; getCurrentEmployeeAssignments(Long employeeId) {
+<span class="fc" id="L40">        return assignmentRepository.findCurrentAssignmentsByEmployeeId(employeeId);</span>
+    }
+
+    /* Все назначения на проект (+ архивные) */
+    public List&lt;Assignment&gt; getProjectAssignments(Long projectId) {
+<span class="fc" id="L45">        return assignmentRepository.findAllAssignmentsByProjectId(projectId);</span>
+    }
+
+    /* Текущие участники проекта */
+    public List&lt;Assignment&gt; getCurrentProjectMembers(Long projectId) {
+<span class="fc" id="L50">        return assignmentRepository.findCurrentAssignmentsByProjectId(projectId);</span>
+    }
+
+    /* Назначение сотрудника на проект с указанной должностью */
+    public Assignment assignToProject(Long employeeId, Long projectId, Long positionId,
+                                      int weeklyHours, LocalDate startDate) {
+<span class="fc" id="L56">        Employee employee = employeeRepository.findById(employeeId)</span>
+<span class="fc" id="L57">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Employee not found: &quot; + employeeId));</span>
+<span class="fc" id="L58">        Project project = projectRepository.findById(projectId)</span>
+<span class="pc" id="L59">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Project not found: &quot; + projectId));</span>
+<span class="fc" id="L60">        Position position = positionRepository.findById(positionId)</span>
+<span class="pc" id="L61">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Position not found: &quot; + positionId));</span>
+
+<span class="fc" id="L63">        Assignment assignment = new Assignment();</span>
+<span class="fc" id="L64">        assignment.setEmployee(employee);</span>
+<span class="fc" id="L65">        assignment.setProject(project);</span>
+<span class="fc" id="L66">        assignment.setPosition(position);</span>
+<span class="fc" id="L67">        assignment.setWeeklyHours(weeklyHours);</span>
+<span class="fc" id="L68">        assignment.setStartDate(startDate);</span>
+<span class="fc" id="L69">        return assignmentRepository.save(assignment);</span>
+    }
+
+    /* Завершение назначения  */
+    public void removeFromProject(Long assignmentId, LocalDate endDate) {
+<span class="fc" id="L74">        Assignment assignment = assignmentRepository.findById(assignmentId)</span>
+<span class="fc" id="L75">                .orElseThrow(() -&gt; new IllegalArgumentException(&quot;Assignment not found: &quot; + assignmentId));</span>
+<span class="fc" id="L76">        assignment.setEndDate(endDate);</span>
+<span class="fc" id="L77">        assignmentRepository.save(assignment);</span>
+<span class="fc" id="L78">    }</span>
+
+    /* Получить назначение по ID */
+    public Assignment findById(Long id) {
+<span class="fc" id="L82">        return assignmentRepository.findById(id).orElse(null);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

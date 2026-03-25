@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.dao.EmployeeDaoTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-03-24T22:34:24" hostname="cdecl" time="0.253">
+  <properties/>
+  <testcase name="findByEmail_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.021"/>
+  <testcase name="searchByName_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.013"/>
+  <testcase name="findAll_returnsAllEmployees()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.023"/>
+  <testcase name="save_createsNewEmployee()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.007"/>
+  <testcase name="findByCurrentPosition_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.009"/>
+  <testcase name="findBySeniorityRange_upperBound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.035"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.005"/>
+  <testcase name="findFormerEmployees_returnsOnlyFired()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.008"/>
+  <testcase name="fireEmployee_setsLeaveDateAndClosesAssignments()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.035"/>
+  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.007"/>
+  <testcase name="findByEmail_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
+  <testcase name="findBySeniorityRange_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.015"/>
+  <testcase name="findByProject_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.009"/>
+  <testcase name="findById_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
+  <testcase name="findByProject_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
+  <testcase name="findByCurrentPosition_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.005"/>
+  <testcase name="findActiveEmployees_returnsOnlyActive()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.014"/>
+  <testcase name="findBySeniorityRange_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.012"/>
+  <system-out><![CDATA[2026-03-25T01:34:24.223+03:00  INFO 1538687 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.EmployeeDaoTest]: EmployeeDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-25T01:34:24.227+03:00  INFO 1538687 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.EmployeeDaoTest
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.email=?
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        upper(e1_0.fullname) like upper(?) escape '\'
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0
+Hibernate: 
+    insert 
+    into
+        employees
+        (address, birthdate, degree, email, fullname, hiredate, leavedate, phonenumber) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    select
+        distinct e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    join
+        assignments a1_0 
+            on e1_0.employeeid=a1_0.employeeid 
+    where
+        a1_0.enddate is null 
+        and a1_0.positionid=?
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.leavedate is null
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.leavedate is null
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.employeeid=?
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.leavedate is not null
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.employeeid=?
+Hibernate: 
+    select
+        a1_0.assignmentid,
+        a1_0.employeeid,
+        a1_0.enddate,
+        a1_0.positionid,
+        p2_0.positionid,
+        p2_0.name,
+        a1_0.projectid,
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate,
+        a1_0.startdate,
+        a1_0.weeklyhours 
+    from
+        assignments a1_0 
+    join
+        projects p1_0 
+            on p1_0.projectid=a1_0.projectid 
+    join
+        positions p2_0 
+            on p2_0.positionid=a1_0.positionid 
+    where
+        a1_0.employeeid=? 
+        and a1_0.enddate is null
+Hibernate: 
+    select
+        a1_0.assignmentid,
+        a1_0.employeeid,
+        a1_0.enddate,
+        a1_0.positionid,
+        a1_0.projectid,
+        a1_0.startdate,
+        a1_0.weeklyhours 
+    from
+        assignments a1_0 
+    where
+        a1_0.employeeid=? 
+        and a1_0.enddate is null
+Hibernate: 
+    update
+        employees 
+    set
+        address=?,
+        birthdate=?,
+        degree=?,
+        email=?,
+        fullname=?,
+        hiredate=?,
+        leavedate=?,
+        phonenumber=? 
+    where
+        employeeid=?
+Hibernate: 
+    update
+        assignments 
+    set
+        employeeid=?,
+        enddate=?,
+        positionid=?,
+        projectid=?,
+        startdate=?,
+        weeklyhours=? 
+    where
+        assignmentid=?
+Hibernate: 
+    select
+        a1_0.assignmentid,
+        a1_0.employeeid,
+        a1_0.enddate,
+        a1_0.positionid,
+        p2_0.positionid,
+        p2_0.name,
+        a1_0.projectid,
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate,
+        a1_0.startdate,
+        a1_0.weeklyhours 
+    from
+        assignments a1_0 
+    join
+        projects p1_0 
+            on p1_0.projectid=a1_0.projectid 
+    join
+        positions p2_0 
+            on p2_0.positionid=a1_0.positionid 
+    where
+        a1_0.employeeid=? 
+        and a1_0.enddate is null
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        upper(e1_0.fullname) like upper(?) escape '\'
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.email=?
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.leavedate is null
+Hibernate: 
+    select
+        distinct e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    join
+        assignments a1_0 
+            on e1_0.employeeid=a1_0.employeeid 
+    where
+        a1_0.projectid=?
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.employeeid=?
+Hibernate: 
+    select
+        distinct e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    join
+        assignments a1_0 
+            on e1_0.employeeid=a1_0.employeeid 
+    where
+        a1_0.projectid=?
+Hibernate: 
+    select
+        distinct e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    join
+        assignments a1_0 
+            on e1_0.employeeid=a1_0.employeeid 
+    where
+        a1_0.enddate is null 
+        and a1_0.positionid=?
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.leavedate is null
+Hibernate: 
+    select
+        e1_0.employeeid,
+        e1_0.address,
+        e1_0.birthdate,
+        e1_0.degree,
+        e1_0.email,
+        e1_0.fullname,
+        e1_0.hiredate,
+        e1_0.leavedate,
+        e1_0.phonenumber 
+    from
+        employees e1_0 
+    where
+        e1_0.leavedate is null
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

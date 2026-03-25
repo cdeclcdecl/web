@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.dao.ProjectDaoTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-03-24T22:34:24" hostname="cdecl" time="0.089">
+  <properties/>
+  <testcase name="searchByName_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <testcase name="findByStartDateRange_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <testcase name="findByStatus_completed()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findByName_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
+  <testcase name="findByStatus_active()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <testcase name="findByName_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findByStartDateRange_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <testcase name="findAll_returnsAllProjects()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.009"/>
+  <testcase name="save_createsNewProject()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findById_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <system-out><![CDATA[2026-03-25T01:34:24.779+03:00  INFO 1538687 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.ProjectDaoTest]: ProjectDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-25T01:34:24.782+03:00  INFO 1538687 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.ProjectDaoTest
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        upper(p1_0.projectname) like upper(?) escape '\'
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.startdate between ? and ?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.projectstatus=?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.projectname=?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.projectid=?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.projectstatus=?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        upper(p1_0.projectname) like upper(?) escape '\'
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.projectname=?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.startdate between ? and ?
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0
+Hibernate: 
+    insert 
+    into
+        projects
+        (enddate, projectname, projectstatus, startdate) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    select
+        p1_0.projectid,
+        p1_0.enddate,
+        p1_0.projectname,
+        p1_0.projectstatus,
+        p1_0.startdate 
+    from
+        projects p1_0 
+    where
+        p1_0.projectid=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
