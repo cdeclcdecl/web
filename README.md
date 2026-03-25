@@ -445,14 +445,20 @@
 
 [Отчёт от JaCoCo](./build/reports/jacoco/test/html/ru.msu.web/WebApplication.java.html)
 
+![](/pics/WebApplicationCov.png)
+
 Здесь достаточно очевидно, потому что это совсем не DAO класс, а основной интерфейс запуска приложения, и он не тестировался, но в отчёт вошёл
 
 #### 2. AssignmentDao
 
 [Отчёт от JaCoCo](./build/reports/jacoco/test/html/ru.msu.web.dao/AssignmentDao.java.html)
 
-
+![](/pics/AssignmentDaoCov1.png)
+![](/pics/AssignmentDaoCov2.png)
 
 #### 3. EmployeeDao
 
 [Отчёт от JaCoCo](./build/reports/jacoco/test/html/ru.msu.web.dao/EmployeeDao.java.html)
+
+![](/pics/EmployeeDaoCov1.png)
+![](/pics/EmployeeDaoCov2.png)
