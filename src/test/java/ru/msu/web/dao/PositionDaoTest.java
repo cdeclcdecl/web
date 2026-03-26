@@ -73,4 +73,16 @@ class PositionDaoTest extends AbstractDaoTest {
         assertNotNull(found);
         assertEquals("Новая должность", found.getName());
     }
+
+    // delete
+    @Test
+    void delete_existingPosition() {
+        Position pos = new Position();
+        pos.setName("Удаляемая должность");
+        Position saved = positionDao.save(pos);
+        assertNotNull(saved.getPositionId());
+
+        positionDao.delete(saved);
+        assertNull(positionDao.findById(saved.getPositionId()));
+    }
 }

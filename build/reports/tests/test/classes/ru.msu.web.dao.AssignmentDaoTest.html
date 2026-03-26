@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">1.192s</div>
+<div class="counter">0.939s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,52 +79,52 @@
 </thead>
 <tr>
 <td class="success">assignToProject_invalid()</td>
-<td class="success">0.005s</td>
+<td class="success">0.007s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">assignToProject_valid()</td>
-<td class="success">1.017s</td>
+<td class="success">0.737s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">getCurrentEmployeeAssignments_found()</td>
-<td class="success">0.082s</td>
+<td class="success">0.093s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">getCurrentEmployeeAssignments_notFound()</td>
-<td class="success">0.009s</td>
+<td class="success">0.010s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">getCurrentProjectMembers_found()</td>
-<td class="success">0.011s</td>
+<td class="success">0.014s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">getCurrentProjectMembers_notFound()</td>
-<td class="success">0.011s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">getEmployeeAssignments_found()</td>
-<td class="success">0.008s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">getEmployeeAssignments_notFound()</td>
-<td class="success">0.009s</td>
-<td class="success">passed</td>
-</tr>
-<tr>
-<td class="success">getProjectAssignments_found()</td>
 <td class="success">0.012s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
+<td class="success">getEmployeeAssignments_found()</td>
+<td class="success">0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getEmployeeAssignments_notFound()</td>
+<td class="success">0.008s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">getProjectAssignments_found()</td>
+<td class="success">0.018s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
 <td class="success">getProjectAssignments_notFound()</td>
-<td class="success">0.009s</td>
+<td class="success">0.008s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -134,7 +134,7 @@
 </tr>
 <tr>
 <td class="success">removeFromProject_valid()</td>
-<td class="success">0.011s</td>
+<td class="success">0.012s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -142,29 +142,29 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>01:33:59.423 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [ru.msu.web.dao.AssignmentDaoTest]: AssignmentDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-01:33:59.653 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.AssignmentDaoTest
-01:33:59.938 [Test worker] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
-01:33:59.948 [Test worker] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
-01:34:00.345 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
-01:34:00.871 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
-01:34:00.873 [Test worker] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
-01:34:00.893 [Test worker] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+<pre>16:50:50.721 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [ru.msu.web.dao.AssignmentDaoTest]: AssignmentDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+16:50:50.937 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.AssignmentDaoTest
+16:50:51.265 [Test worker] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+16:50:51.270 [Test worker] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+16:50:51.556 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.UnixSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+16:50:53.582 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+16:50:53.584 [Test worker] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+16:50:53.606 [Test worker] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
   Server Version: 28.4.0
   API Version: 1.51
   Operating System: Ubuntu Core 24
   Total Memory: 15841 MB
-01:34:00.933 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Creating container for image: testcontainers/ryuk:0.6.0
-01:34:00.941 [Test worker] INFO org.testcontainers.utility.RegistryAuthLocator -- Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.6.0, configFile: /home/cdecl/.docker/config.json, configEnv: DOCKER_AUTH_CONFIG). Falling back to docker-java default behaviour. Exception message: Status 404: No config supplied. Checked in order: /home/cdecl/.docker/config.json (file not found), DOCKER_AUTH_CONFIG (not set)
-01:34:04.446 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 is starting: 15dd18287672a2b7c1013eeff9362ac6b20271c74f43f4b0310c3e2d37a8fcb0
-01:34:05.579 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 started in PT4.645864996S
-01:34:05.583 [Test worker] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
-01:34:05.583 [Test worker] INFO org.testcontainers.DockerClientFactory -- Checking the system...
-01:34:05.584 [Test worker] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
-01:34:05.585 [Test worker] INFO tc.postgres:15-alpine -- Creating container for image: postgres:15-alpine
-01:34:10.443 [Test worker] INFO tc.postgres:15-alpine -- Container postgres:15-alpine is starting: 720b1e74fa346760b19b5063a38f4389126e23774e347f916a570270962b5c40
-01:34:17.958 [Test worker] INFO tc.postgres:15-alpine -- Container postgres:15-alpine started in PT12.372817419S
-01:34:17.958 [Test worker] INFO tc.postgres:15-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:32791/test?loggerLevel=OFF)
+16:50:53.924 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Creating container for image: testcontainers/ryuk:0.6.0
+16:50:53.930 [Test worker] INFO org.testcontainers.utility.RegistryAuthLocator -- Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.6.0, configFile: /home/cdecl/.docker/config.json, configEnv: DOCKER_AUTH_CONFIG). Falling back to docker-java default behaviour. Exception message: Status 404: No config supplied. Checked in order: /home/cdecl/.docker/config.json (file not found), DOCKER_AUTH_CONFIG (not set)
+16:51:00.258 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 is starting: fee30b0ea9dc142386f3f2dd2ca9000c9447f56e13d37855f55e0b6df2afdda3
+16:51:03.222 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 started in PT9.298634406S
+16:51:03.227 [Test worker] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+16:51:03.227 [Test worker] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+16:51:03.228 [Test worker] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+16:51:03.229 [Test worker] INFO tc.postgres:15-alpine -- Creating container for image: postgres:15-alpine
+16:51:08.006 [Test worker] INFO tc.postgres:15-alpine -- Container postgres:15-alpine is starting: b6a7fa487018a8d1c7bff19f93aa0d4ad7d84f13b8d2a11e4d651a14cb07a38e
+16:51:17.207 [Test worker] INFO tc.postgres:15-alpine -- Container postgres:15-alpine started in PT13.978375917S
+16:51:17.208 [Test worker] INFO tc.postgres:15-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:32793/test?loggerLevel=OFF)
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -174,21 +174,21 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.5)
 
-2026-03-25T01:34:18.595+03:00  INFO 1538687 --- [    Test worker] ru.msu.web.dao.AssignmentDaoTest         : Starting AssignmentDaoTest using Java 17.0.18 with PID 1538687 (started by cdecl in /home/cdecl/web)
-2026-03-25T01:34:18.596+03:00  INFO 1538687 --- [    Test worker] ru.msu.web.dao.AssignmentDaoTest         : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2026-03-25T01:34:19.057+03:00  INFO 1538687 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-03-25T01:34:19.132+03:00  INFO 1538687 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 64 ms. Found 6 JPA repository interfaces.
-2026-03-25T01:34:19.566+03:00  INFO 1538687 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-03-25T01:34:19.635+03:00  INFO 1538687 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
-2026-03-25T01:34:19.678+03:00  INFO 1538687 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-03-25T01:34:19.999+03:00  INFO 1538687 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-03-25T01:34:20.035+03:00  INFO 1538687 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-03-25T01:34:20.084+03:00  INFO 1538687 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@26dcce41
-2026-03-25T01:34:20.086+03:00  INFO 1538687 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-03-25T01:34:21.632+03:00  INFO 1538687 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-03-25T01:34:21.635+03:00  INFO 1538687 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-03-25T01:34:22.010+03:00  INFO 1538687 --- [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-03-25T01:34:23.006+03:00  INFO 1538687 --- [    Test worker] ru.msu.web.dao.AssignmentDaoTest         : Started AssignmentDaoTest in 4.709 seconds (process running for 24.923)
+2026-03-26T16:51:18.155+03:00  INFO 1702563 --- [    Test worker] ru.msu.web.dao.AssignmentDaoTest         : Starting AssignmentDaoTest using Java 17.0.18 with PID 1702563 (started by cdecl in /home/cdecl/web)
+2026-03-26T16:51:18.157+03:00  INFO 1702563 --- [    Test worker] ru.msu.web.dao.AssignmentDaoTest         : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-03-26T16:51:18.937+03:00  INFO 1702563 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-26T16:51:19.027+03:00  INFO 1702563 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 76 ms. Found 6 JPA repository interfaces.
+2026-03-26T16:51:19.620+03:00  INFO 1702563 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-03-26T16:51:19.924+03:00  INFO 1702563 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-03-26T16:51:19.963+03:00  INFO 1702563 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-03-26T16:51:20.338+03:00  INFO 1702563 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-26T16:51:20.378+03:00  INFO 1702563 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-26T16:51:20.436+03:00  INFO 1702563 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4110e631
+2026-03-26T16:51:20.439+03:00  INFO 1702563 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-26T16:51:22.002+03:00  INFO 1702563 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-26T16:51:22.005+03:00  INFO 1702563 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-26T16:51:22.592+03:00  INFO 1702563 --- [    Test worker] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-26T16:51:23.511+03:00  INFO 1702563 --- [    Test worker] ru.msu.web.dao.AssignmentDaoTest         : Started AssignmentDaoTest in 5.702 seconds (process running for 34.932)
 Hibernate: 
     select
         e1_0.employeeid,
@@ -524,7 +524,7 @@ Hibernate:
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 25, 2026, 1:34:25 AM</p>
+<a href="http://www.gradle.org">Gradle 8.5</a> at Mar 26, 2026, 4:51:25 PM</p>
 </div>
 </div>
 </body>

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ru.msu.web.dao.EmployeeDaoTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-03-24T22:34:24" hostname="cdecl" time="0.253">
+<testsuite name="ru.msu.web.dao.EmployeeDaoTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-03-26T13:51:24" hostname="cdecl" time="0.299">
   <properties/>
-  <testcase name="findByEmail_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.021"/>
-  <testcase name="searchByName_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.013"/>
-  <testcase name="findAll_returnsAllEmployees()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.023"/>
+  <testcase name="findByEmail_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.027"/>
+  <testcase name="searchByName_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.018"/>
+  <testcase name="findAll_returnsAllEmployees()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.024"/>
   <testcase name="save_createsNewEmployee()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.007"/>
-  <testcase name="findByCurrentPosition_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.009"/>
+  <testcase name="findByCurrentPosition_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.01"/>
   <testcase name="findBySeniorityRange_upperBound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.035"/>
-  <testcase name="findById_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.005"/>
-  <testcase name="findFormerEmployees_returnsOnlyFired()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.008"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
+  <testcase name="findFormerEmployees_returnsOnlyFired()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.03"/>
   <testcase name="fireEmployee_setsLeaveDateAndClosesAssignments()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.035"/>
-  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.007"/>
-  <testcase name="findByEmail_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
-  <testcase name="findBySeniorityRange_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.015"/>
+  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
+  <testcase name="findByEmail_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.007"/>
+  <testcase name="findBySeniorityRange_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.022"/>
   <testcase name="findByProject_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.009"/>
-  <testcase name="findById_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
-  <testcase name="findByProject_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.006"/>
+  <testcase name="findById_found()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.005"/>
+  <testcase name="findByProject_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.005"/>
   <testcase name="findByCurrentPosition_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.005"/>
-  <testcase name="findActiveEmployees_returnsOnlyActive()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.014"/>
-  <testcase name="findBySeniorityRange_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.012"/>
-  <system-out><![CDATA[2026-03-25T01:34:24.223+03:00  INFO 1538687 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.EmployeeDaoTest]: EmployeeDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-25T01:34:24.227+03:00  INFO 1538687 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.EmployeeDaoTest
+  <testcase name="findActiveEmployees_returnsOnlyActive()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.013"/>
+  <testcase name="findBySeniorityRange_notFound()" classname="ru.msu.web.dao.EmployeeDaoTest" time="0.014"/>
+  <system-out><![CDATA[2026-03-26T16:51:24.485+03:00  INFO 1702563 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.EmployeeDaoTest]: EmployeeDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-26T16:51:24.490+03:00  INFO 1702563 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.EmployeeDaoTest
 Hibernate: 
     select
         e1_0.employeeid,

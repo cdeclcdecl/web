@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ru.msu.web.dao.PositionDaoTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-03-24T22:34:24" hostname="cdecl" time="0.047">
+<testsuite name="ru.msu.web.dao.PositionDaoTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-03-26T13:51:25" hostname="cdecl" time="0.055">
   <properties/>
-  <testcase name="save_createsNewPosition()" classname="ru.msu.web.dao.PositionDaoTest" time="0.005"/>
-  <testcase name="searchByName_found()" classname="ru.msu.web.dao.PositionDaoTest" time="0.007"/>
-  <testcase name="findByName_found()" classname="ru.msu.web.dao.PositionDaoTest" time="0.005"/>
-  <testcase name="findById_notFound()" classname="ru.msu.web.dao.PositionDaoTest" time="0.003"/>
-  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.PositionDaoTest" time="0.005"/>
-  <testcase name="findByName_notFound()" classname="ru.msu.web.dao.PositionDaoTest" time="0.005"/>
+  <testcase name="save_createsNewPosition()" classname="ru.msu.web.dao.PositionDaoTest" time="0.004"/>
+  <testcase name="searchByName_found()" classname="ru.msu.web.dao.PositionDaoTest" time="0.006"/>
+  <testcase name="findByName_found()" classname="ru.msu.web.dao.PositionDaoTest" time="0.006"/>
+  <testcase name="delete_existingPosition()" classname="ru.msu.web.dao.PositionDaoTest" time="0.009"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.PositionDaoTest" time="0.004"/>
+  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.PositionDaoTest" time="0.003"/>
+  <testcase name="findByName_notFound()" classname="ru.msu.web.dao.PositionDaoTest" time="0.004"/>
   <testcase name="findById_found()" classname="ru.msu.web.dao.PositionDaoTest" time="0.004"/>
   <testcase name="findAll_returnsAllPositions()" classname="ru.msu.web.dao.PositionDaoTest" time="0.007"/>
-  <system-out><![CDATA[2026-03-25T01:34:24.725+03:00  INFO 1538687 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PositionDaoTest]: PositionDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-25T01:34:24.728+03:00  INFO 1538687 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PositionDaoTest
+  <system-out><![CDATA[2026-03-26T16:51:25.044+03:00  INFO 1702563 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PositionDaoTest]: PositionDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-26T16:51:25.047+03:00  INFO 1702563 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PositionDaoTest
 Hibernate: 
     insert 
     into
@@ -34,6 +35,13 @@ Hibernate:
         positions p1_0 
     where
         upper(p1_0.name)=upper(?)
+Hibernate: 
+    insert 
+    into
+        positions
+        (name) 
+    values
+        (?)
 Hibernate: 
     select
         p1_0.positionid,
