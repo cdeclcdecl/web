@@ -45,4 +45,8 @@ public class PaymentPolicyDao {
     public PaymentPolicy save(PaymentPolicy policy) {
         return paymentPolicyRepository.save(policy);
     }
+
+    public void delete(PaymentPolicy policy) {
+        paymentPolicyRepository.delete(policy);
+    }
 }

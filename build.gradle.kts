@@ -1,5 +1,6 @@
 plugins {
     java
+    war
     jacoco
     id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.1.4"
@@ -21,17 +22,27 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("org.apache.tomcat.embed:tomcat-embed-jasper")
+    implementation("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0")
+    runtimeOnly("org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1")
     runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.20.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 sourceSets {
+    main {
+        resources {
+            srcDir("src/main/webapp")
+        }
+    }
     test {
         resources {
             srcDir("db_scripts")
@@ -41,7 +52,27 @@ sourceSets {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    environment("DOCKER_HOST", "unix:///var/run/docker.sock")
+    environment("DOCKER_API_VERSION", "1.43")
+    jvmArgs("-Dapi.version=1.43")
     finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.test {
+    filter {
+        excludeTestsMatching("ru.msu.web.system.*")
+    }
+}
+
+tasks.register<Test>("systemTest") {
+    group = "verification"
+    description = "Запуск системных тестов (требует geckodriver и Firefox)"
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching("ru.msu.web.system.*")
+    }
 }
 
 tasks.jacocoTestReport {
@@ -154,5 +185,53 @@ tasks.register("setupDb") {
     
     doLast {
         println("Окружение готово к работе")
+    }
+}
+
+tasks.register("deploy") {
+    group = "Application"
+    description = "Сборка и запуск приложения в фоне"
+    dependsOn(tasks.named("bootWar"))
+
+    doLast {
+        val pgReady = ProcessBuilder("pg_isready", "-h", dbHost, "-p", dbPort)
+            .start().also { it.waitFor() }.exitValue() == 0
+
+        if (!pgReady) {
+            println("PostgreSQL недоступен, запускаю контейнер Docker...")
+            val running = ProcessBuilder("docker", "ps", "-q", "--filter", "name=web-postgres")
+                .start().also { it.waitFor() }.inputStream.bufferedReader().readText().trim()
+            if (running.isEmpty()) {
+                ProcessBuilder(
+                    "docker", "run", "-d", "--rm", "--name", "web-postgres",
+                    "-e", "POSTGRES_DB=$dbName", "-e", "POSTGRES_USER=$dbUser",
+                    "-e", "POSTGRES_PASSWORD=$dbPassword", "-p", "$dbPort:5432",
+                    "postgres:15-alpine"
+                ).inheritIO().start().waitFor()
+            }
+            print("Ожидание готовности PostgreSQL")
+            for (i in 1..30) {
+                Thread.sleep(1000)
+                print(".")
+                val r = ProcessBuilder("pg_isready", "-h", dbHost, "-p", dbPort).start()
+                r.waitFor()
+                if (r.exitValue() == 0) break
+            }
+            println()
+            val initPb = ProcessBuilder("psql", "-h", dbHost, "-p", dbPort, "-U", dbUser, "-d", dbName, "-f", "db_scripts/db_init.sql")
+            initPb.environment()["PGPASSWORD"] = dbPassword
+            initPb.inheritIO().start().waitFor()
+            val fillPb = ProcessBuilder("psql", "-h", dbHost, "-p", dbPort, "-U", dbUser, "-d", dbName, "-f", "db_scripts/db_fill.sql")
+            fillPb.environment()["PGPASSWORD"] = dbPassword
+            fillPb.inheritIO().start().waitFor()
+            println("БД инициализирована")
+        }
+
+        val warFile = tasks.named<org.springframework.boot.gradle.tasks.bundling.BootWar>("bootWar").get().archiveFile.get().asFile
+        val process = ProcessBuilder("java", "-jar", warFile.absolutePath)
+            .inheritIO()
+            .start()
+        println("Приложение запущено, PID: ${process.pid()}")
+        println("Остановить: kill ${process.pid()}")
     }
 }
