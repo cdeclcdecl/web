@@ -91,11 +91,11 @@ public class EmployeeController {
     }
 
     @PostMapping("/new")
-    public String create(@RequestParam String fullName,
+    public String create(@RequestParam(required = false) String fullName,
                          @RequestParam(required = false) String address,
-                         @RequestParam String birthDate,
+                         @RequestParam(required = false) String birthDate,
                          @RequestParam(required = false) String degree,
-                         @RequestParam String hireDate,
+                         @RequestParam(required = false) String hireDate,
                          @RequestParam(required = false) String email,
                          @RequestParam(required = false) String phoneNumber,
                          Model model) {
@@ -141,11 +141,11 @@ public class EmployeeController {
 
     @PostMapping("/{id:\\d+}/edit")
     public String update(@PathVariable Long id,
-                         @RequestParam String fullName,
+                         @RequestParam(required = false) String fullName,
                          @RequestParam(required = false) String address,
-                         @RequestParam String birthDate,
+                         @RequestParam(required = false) String birthDate,
                          @RequestParam(required = false) String degree,
-                         @RequestParam String hireDate,
+                         @RequestParam(required = false) String hireDate,
                          @RequestParam(required = false) String email,
                          @RequestParam(required = false) String phoneNumber,
                          Model model) {

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Payment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">web</a> &gt; <a href="index.source.html" class="el_package">ru.msu.web.entity</a> &gt; <span class="el_source">Payment.java</span></div><h1>Payment.java</h1><pre class="source lang-java linenums">package ru.msu.web.entity;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = &quot;payments&quot;)
+public class Payment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;paymentid&quot;)
+    private Long paymentId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;assignmentid&quot;)
+    private Assignment assignment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;policyid&quot;)
+    private PaymentPolicy policy;
+
+    @Column(name = &quot;amount&quot;, nullable = false, precision = 12, scale = 2)
+    private BigDecimal amount;
+
+    @Column(name = &quot;periodstart&quot;)
+    private LocalDate periodStart;
+
+    @Column(name = &quot;periodend&quot;)
+    private LocalDate periodEnd;
+
+<span class="fc" id="L33">    @Column(name = &quot;istransactioned&quot;)</span>
+    private boolean transactioned = false;
+
+    @Column(name = &quot;paymentdate&quot;)
+    private LocalDate paymentDate;
+
+<span class="fc" id="L39">    public Payment() {}</span>
+
+<span class="nc" id="L41">    public boolean isPaid() { return transactioned; }</span>
+
+<span class="fc" id="L43">    public Long getPaymentId() { return paymentId; }</span>
+<span class="nc" id="L44">    public void setPaymentId(Long paymentId) { this.paymentId = paymentId; }</span>
+
+<span class="fc" id="L46">    public Assignment getAssignment() { return assignment; }</span>
+<span class="fc" id="L47">    public void setAssignment(Assignment assignment) { this.assignment = assignment; }</span>
+
+<span class="fc" id="L49">    public PaymentPolicy getPolicy() { return policy; }</span>
+<span class="fc" id="L50">    public void setPolicy(PaymentPolicy policy) { this.policy = policy; }</span>
+
+<span class="fc" id="L52">    public BigDecimal getAmount() { return amount; }</span>
+<span class="fc" id="L53">    public void setAmount(BigDecimal amount) { this.amount = amount; }</span>
+
+<span class="fc" id="L55">    public LocalDate getPeriodStart() { return periodStart; }</span>
+<span class="fc" id="L56">    public void setPeriodStart(LocalDate periodStart) { this.periodStart = periodStart; }</span>
+
+<span class="fc" id="L58">    public LocalDate getPeriodEnd() { return periodEnd; }</span>
+<span class="fc" id="L59">    public void setPeriodEnd(LocalDate periodEnd) { this.periodEnd = periodEnd; }</span>
+
+<span class="fc" id="L61">    public boolean isTransactioned() { return transactioned; }</span>
+<span class="fc" id="L62">    public void setTransactioned(boolean transactioned) { this.transactioned = transactioned; }</span>
+
+<span class="fc" id="L64">    public LocalDate getPaymentDate() { return paymentDate; }</span>
+<span class="fc" id="L65">    public void setPaymentDate(LocalDate paymentDate) { this.paymentDate = paymentDate; }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

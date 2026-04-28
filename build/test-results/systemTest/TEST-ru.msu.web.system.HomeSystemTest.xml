@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.system.HomeSystemTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:25:10" hostname="cdecl" time="22.843">
+  <properties/>
+  <testcase name="dashboard_showsNavigation()" classname="ru.msu.web.system.HomeSystemTest" time="22.843"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Apr 28, 2026 8:25:33 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2224674
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+]]></system-err>
+</testsuite>

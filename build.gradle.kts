@@ -9,6 +9,8 @@ plugins {
 
 group = "ru.msu"
 version = "0.0.1-SNAPSHOT"
+val jacocoVersion = "0.8.11"
+val jacocoRuntimeAgent by configurations.creating
 
 java {
     toolchain {
@@ -35,6 +37,11 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.seleniumhq.selenium:selenium-java:4.20.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    add(jacocoRuntimeAgent.name, "org.jacoco:org.jacoco.agent:$jacocoVersion:runtime")
+}
+
+jacoco {
+    toolVersion = jacocoVersion
 }
 
 sourceSets {
@@ -55,31 +62,76 @@ tasks.withType<Test> {
     environment("DOCKER_HOST", "unix:///var/run/docker.sock")
     environment("DOCKER_API_VERSION", "1.43")
     jvmArgs("-Dapi.version=1.43")
-    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.test {
+    extensions.configure(org.gradle.testing.jacoco.plugins.JacocoTaskExtension::class) {
+        destinationFile = layout.buildDirectory.file("jacoco/test.exec").get().asFile
+    }
     filter {
         excludeTestsMatching("ru.msu.web.system.*")
     }
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.register<Test>("systemTest") {
     group = "verification"
     description = "Запуск системных тестов (требует geckodriver и Firefox)"
+    dependsOn(tasks.named("bootWar"))
     testClassesDirs = sourceSets.test.get().output.classesDirs
     classpath = sourceSets.test.get().runtimeClasspath
     useJUnitPlatform()
     filter {
         includeTestsMatching("ru.msu.web.system.*")
     }
+    systemProperty("systemTest.jacocoAppExecFile", layout.buildDirectory.file("jacoco/systemTest-app.exec").get().asFile.absolutePath)
+    extensions.configure(org.gradle.testing.jacoco.plugins.JacocoTaskExtension::class) {
+        destinationFile = layout.buildDirectory.file("jacoco/systemTest.exec").get().asFile
+    }
+    doFirst {
+        systemProperty("systemTest.jacocoAgentJar", jacocoRuntimeAgent.singleFile.absolutePath)
+        delete(layout.buildDirectory.file("jacoco/systemTest.exec"), layout.buildDirectory.file("jacoco/systemTest-app.exec"))
+    }
+    finalizedBy("jacocoSystemTestReport")
 }
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+    executionData(layout.buildDirectory.file("jacoco/test.exec"))
+    sourceDirectories.setFrom(sourceSets.main.get().allSource.srcDirs)
+    classDirectories.setFrom(sourceSets.main.get().output)
     reports {
         xml.required = true
         html.required = true
+    }
+}
+
+tasks.register<org.gradle.testing.jacoco.tasks.JacocoReport>("jacocoSystemTestReport") {
+    dependsOn(tasks.named("systemTest"))
+    executionData(layout.buildDirectory.file("jacoco/systemTest-app.exec"))
+    sourceDirectories.setFrom(sourceSets.main.get().allSource.srcDirs)
+    classDirectories.setFrom(sourceSets.main.get().output)
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/systemTest"))
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/systemTest/jacocoSystemTestReport.xml"))
+    }
+}
+
+tasks.register<org.gradle.testing.jacoco.tasks.JacocoReport>("jacocoAllTestReport") {
+    dependsOn(tasks.test, tasks.named("systemTest"))
+    executionData(
+        layout.buildDirectory.file("jacoco/test.exec"),
+        layout.buildDirectory.file("jacoco/systemTest-app.exec")
+    )
+    sourceDirectories.setFrom(sourceSets.main.get().allSource.srcDirs)
+    classDirectories.setFrom(sourceSets.main.get().output)
+    reports {
+        xml.required = true
+        html.required = true
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/allTests"))
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/allTests/jacocoAllTestReport.xml"))
     }
 }
 

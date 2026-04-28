@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.system.EmployeeSystemTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:21:00" hostname="cdecl" time="250.772">
+  <properties/>
+  <testcase name="listEmployees_showsTable()" classname="ru.msu.web.system.EmployeeSystemTest" time="36.361"/>
+  <testcase name="addEmployee_duplicateEmail()" classname="ru.msu.web.system.EmployeeSystemTest" time="23.893"/>
+  <testcase name="listEmployees_filtersByAssignmentAndSortsByProjects()" classname="ru.msu.web.system.EmployeeSystemTest" time="28.811"/>
+  <testcase name="listEmployees_sortsByPosition()" classname="ru.msu.web.system.EmployeeSystemTest" time="16.758"/>
+  <testcase name="viewEmployee_showsDetails()" classname="ru.msu.web.system.EmployeeSystemTest" time="24.686"/>
+  <testcase name="editEmployee_success()" classname="ru.msu.web.system.EmployeeSystemTest" time="34.68"/>
+  <testcase name="addEmployee_missingBirthDate()" classname="ru.msu.web.system.EmployeeSystemTest" time="19.43"/>
+  <testcase name="fireEmployee_success()" classname="ru.msu.web.system.EmployeeSystemTest" time="21.082"/>
+  <testcase name="addEmployee_missingName()" classname="ru.msu.web.system.EmployeeSystemTest" time="20.205"/>
+  <testcase name="addEmployee_success()" classname="ru.msu.web.system.EmployeeSystemTest" time="24.865"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Apr 28, 2026 8:21:36 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2217000
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:22:00 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2217848
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:22:29 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2218628
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:22:45 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2219430
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:23:10 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2220123
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:23:45 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2220896
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:24:04 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2221734
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:24:25 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2222474
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:24:45 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2223202
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+Apr 28, 2026 8:25:10 PM org.openqa.selenium.os.ExternalProcess$Builder lambda$start$0
+WARNING: failed to copy the output of process 2223913
+java.io.IOException: Stream closed
+	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+]]></system-err>
+</testsuite>

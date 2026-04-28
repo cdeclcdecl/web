@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.system.AssignmentSystemTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:19:49" hostname="cdecl" time="70.769">
+  <properties/>
+  <testcase name="assignEmployee_success()" classname="ru.msu.web.system.AssignmentSystemTest" time="50.25"/>
+  <testcase name="closeAssignment_success()" classname="ru.msu.web.system.AssignmentSystemTest" time="20.518"/>
+  <system-out><![CDATA[20:18:41.840 [Test worker] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+20:18:41.859 [Test worker] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+20:18:43.364 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with Environment variables, system properties and defaults. Resolved dockerHost=unix:///var/run/docker.sock
+20:18:43.366 [Test worker] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+20:18:43.611 [Test worker] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 29.3.1
+  API Version: 1.54
+  Operating System: Ubuntu Core 24
+  Total Memory: 15841 MB
+20:18:43.678 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Creating container for image: testcontainers/ryuk:0.6.0
+20:18:43.692 [Test worker] INFO org.testcontainers.utility.RegistryAuthLocator -- Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.6.0, configFile: /home/cdecl/.docker/config.json, configEnv: DOCKER_AUTH_CONFIG). Falling back to docker-java default behaviour. Exception message: Status 404: No config supplied. Checked in order: /home/cdecl/.docker/config.json (file not found), DOCKER_AUTH_CONFIG (not set)
+20:18:53.409 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 is starting: d2d9a2a613e62bbe00e71620701980346c18d3b9f242d002d1cbcdb9e68bbc4a
+20:18:56.362 [Test worker] INFO tc.testcontainers/ryuk:0.6.0 -- Container testcontainers/ryuk:0.6.0 started in PT12.684481938S
+20:18:56.367 [Test worker] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+20:18:56.368 [Test worker] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+20:18:56.369 [Test worker] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+20:18:56.369 [Test worker] INFO tc.postgres:15-alpine -- Creating container for image: postgres:15-alpine
+20:19:01.854 [Test worker] INFO tc.postgres:15-alpine -- Container postgres:15-alpine is starting: 56fabfbdca03c52c79a3492e562abe18180cd3c88e18e8ee433233e3b9dd6eda
+20:19:48.772 [Test worker] INFO tc.postgres:15-alpine -- Container postgres:15-alpine started in PT52.402734893S
+20:19:48.773 [Test worker] INFO tc.postgres:15-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:32858/test?loggerLevel=OFF)
+]]></system-out>
+  <system-err><![CDATA[	at java.base/java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:168)
+	at java.base/java.io.BufferedInputStream.read(BufferedInputStream.java:334)
+	at java.base/java.io.InputStream.transferTo(InputStream.java:782)
+	at org.openqa.selenium.os.ExternalProcess$Builder.lambda$start$0(ExternalProcess.java:209)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+]]></system-err>
+</testsuite>

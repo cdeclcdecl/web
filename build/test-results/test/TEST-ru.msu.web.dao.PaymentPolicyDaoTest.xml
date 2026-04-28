@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ru.msu.web.dao.PaymentPolicyDaoTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-03-26T13:51:24" hostname="cdecl" time="0.074">
+<testsuite name="ru.msu.web.dao.PaymentPolicyDaoTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:18:38" hostname="cdecl" time="0.072">
   <properties/>
-  <testcase name="findByType_calendarBonus()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.011"/>
-  <testcase name="findByAmountRange_found()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.007"/>
-  <testcase name="findByAmountRange_notFound()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
-  <testcase name="save_createsNewPolicy()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.008"/>
-  <testcase name="findById_notFound()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.005"/>
-  <testcase name="findByType_seniority()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.005"/>
-  <testcase name="findByType_salary()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.01"/>
-  <testcase name="findById_found()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.004"/>
-  <testcase name="findAll_returnsAllPolicies()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.01"/>
-  <system-out><![CDATA[2026-03-26T16:51:24.960+03:00  INFO 1702563 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PaymentPolicyDaoTest]: PaymentPolicyDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-26T16:51:24.964+03:00  INFO 1702563 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PaymentPolicyDaoTest
+  <testcase name="findByType_calendarBonus()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.012"/>
+  <testcase name="findByAmountRange_found()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
+  <testcase name="findByAmountRange_notFound()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.005"/>
+  <testcase name="save_createsNewPolicy()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.004"/>
+  <testcase name="findByType_seniority()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
+  <testcase name="findByType_salary()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.009"/>
+  <testcase name="findById_found()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.006"/>
+  <testcase name="findAll_returnsAllPolicies()" classname="ru.msu.web.dao.PaymentPolicyDaoTest" time="0.009"/>
+  <system-out><![CDATA[2026-04-28T20:18:38.586+03:00  INFO 2212791 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PaymentPolicyDaoTest]: PaymentPolicyDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-04-28T20:18:38.590+03:00  INFO 2212791 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PaymentPolicyDaoTest
 Hibernate: 
     select
         pp1_0.policyid,

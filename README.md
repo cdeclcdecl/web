@@ -462,3 +462,15 @@
 
 ![](/pics/EmployeeDaoCov1.png)
 ![](/pics/EmployeeDaoCov2.png)
+
+<a name="front"></a>
+
+## FrontEnd
+
+Для полной сборки приложения в Gradle-сборщик была добавлена цель deploy (см. [[build.gradle.kts]])
+
+Также реализованы JSP-страницы и классы-контроллеры для каждой из них
+
+Покрытие тестами доступно в [JaCoCo - репортах](/build/reports/jacoco/systemTest/)
+
+Скриншоты итоговых страниц лежат [здесь](/pics/pages_screenshots/)

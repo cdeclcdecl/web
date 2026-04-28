@@ -53,10 +53,10 @@ class EmployeeSystemTest extends AbstractSystemTest {
         WebElement nameField = driver.findElement(By.name("fullName"));
         nameField.clear();
 
-        driver.findElement(By.cssSelector("form")).submit();
+        driver.findElement(By.cssSelector("button[type=submit]")).click();
 
-        String src = driver.getPageSource();
-        assertTrue(src.contains("ФИО обязательно") || src.contains("employees/new") || src.contains("required"));
+        WebElement error = webWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
+        assertTrue(error.getText().contains("ФИО обязательно"));
     }
 
     @Test
@@ -80,10 +80,10 @@ class EmployeeSystemTest extends AbstractSystemTest {
         WebElement birthField = driver.findElement(By.name("birthDate"));
         birthField.clear();
 
-        driver.findElement(By.cssSelector("form")).submit();
+        driver.findElement(By.cssSelector("button[type=submit]")).click();
 
-        String src = driver.getPageSource();
-        assertTrue(src.contains("Дата рождения") || src.contains("required"));
+        WebElement error = webWait().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
+        assertTrue(error.getText().contains("Дата рождения обязательна"));
     }
 
     @Test
@@ -97,5 +97,51 @@ class EmployeeSystemTest extends AbstractSystemTest {
 
         webWait().until(ExpectedConditions.urlContains("/employees/5"));
         assertTrue(driver.getPageSource().contains("Уволен"));
+    }
+
+    @Test
+    void editEmployee_success() {
+        String createdName = "System Employee Edit Source";
+        String updatedName = "System Employee Edit Result";
+
+        driver.get(url("/employees/new"));
+        driver.findElement(By.name("fullName")).sendKeys(createdName);
+        driver.findElement(By.name("email")).sendKeys("system-employee-edit@test.ru");
+        driver.findElement(By.name("birthDate")).sendKeys("1991-02-03");
+        driver.findElement(By.name("hireDate")).sendKeys("2024-02-03");
+        driver.findElement(By.cssSelector("button[type=submit]")).click();
+
+        webWait().until(ExpectedConditions.urlContains("/employees"));
+        driver.findElement(By.xpath("//tr[td/a[contains(., '" + createdName + "')]]//a[contains(@href, '/edit')]")).click();
+
+        webWait().until(ExpectedConditions.urlContains("/edit"));
+        WebElement fullName = driver.findElement(By.name("fullName"));
+        fullName.clear();
+        fullName.sendKeys(updatedName);
+        driver.findElement(By.cssSelector("button[type=submit]")).click();
+
+        webWait().until(ExpectedConditions.urlContains("/employees/"));
+        assertTrue(driver.getPageSource().contains(updatedName));
+    }
+
+    @Test
+    void listEmployees_filtersByAssignmentAndSortsByProjects() {
+        driver.get(url("/employees?search=%D0%BE%D0%B2&status=active&seniorityMin=3&seniorityMax=10&positionId=10&projectId=13&sort=projectsDesc"));
+
+        String src = driver.getPageSource();
+        assertTrue(src.contains("Смирнов Алексей Дмитриевич"));
+        assertTrue(src.contains("Соколов Павел Андреевич"));
+        assertFalse(src.contains("Павлов Сергей Александрович"));
+        assertTrue(src.indexOf("Смирнов Алексей Дмитриевич") < src.indexOf("Соколов Павел Андреевич"));
+    }
+
+    @Test
+    void listEmployees_sortsByPosition() {
+        driver.get(url("/employees?projectId=13&status=active&sort=positionAsc"));
+
+        String src = driver.getPageSource();
+        assertTrue(src.contains("Жукова Наталья Петровна"));
+        assertTrue(src.contains("Кузнецова Мария Ивановна"));
+        assertTrue(src.indexOf("Жукова Наталья Петровна") < src.indexOf("Кузнецова Мария Ивановна"));
     }
 }

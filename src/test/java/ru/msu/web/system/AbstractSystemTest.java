@@ -9,7 +9,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
@@ -29,6 +28,7 @@ public abstract class AbstractSystemTest {
     private static Process appProcess;
     private static Path appLogFile;
     private static int appPort;
+    private static Path appCoverageFile;
 
     static {
         POSTGRES = new PostgreSQLContainer<>("postgres:15-alpine")
@@ -85,6 +85,7 @@ public abstract class AbstractSystemTest {
                 Files.createFile(appLogFile);
                 ProcessBuilder processBuilder = new ProcessBuilder(
                         Path.of(System.getProperty("java.home"), "bin", "java").toString(),
+                    jacocoAgentArgument(),
                         "-jar",
                         findWarFile().toString(),
                         "--server.port=" + appPort
@@ -112,6 +113,22 @@ public abstract class AbstractSystemTest {
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("WAR file not found in build/libs"));
         }
+    }
+
+    private static String jacocoAgentArgument() {
+        String agentJar = System.getProperty("systemTest.jacocoAgentJar");
+        String execFile = System.getProperty("systemTest.jacocoAppExecFile");
+        if (agentJar == null || agentJar.isBlank() || execFile == null || execFile.isBlank()) {
+            throw new IllegalStateException("JaCoCo system test agent is not configured");
+        }
+        appCoverageFile = Path.of(execFile);
+        try {
+            Files.createDirectories(appCoverageFile.getParent());
+            Files.deleteIfExists(appCoverageFile);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to prepare JaCoCo exec file", e);
+        }
+        return "-javaagent:" + agentJar + "=destfile=" + appCoverageFile + ",append=false,output=file,dumponexit=true";
     }
 
     private static int findFreePort() throws IOException {

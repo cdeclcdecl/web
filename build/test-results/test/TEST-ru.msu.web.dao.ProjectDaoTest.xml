@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ru.msu.web.dao.ProjectDaoTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-03-26T13:51:25" hostname="cdecl" time="0.064">
+<testsuite name="ru.msu.web.dao.ProjectDaoTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:18:38" hostname="cdecl" time="0.092">
   <properties/>
-  <testcase name="searchByName_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
-  <testcase name="findByStartDateRange_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.005"/>
-  <testcase name="findByStatus_completed()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
-  <testcase name="findByName_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.005"/>
-  <testcase name="findById_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.003"/>
-  <testcase name="findByStatus_active()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.005"/>
-  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
-  <testcase name="findByName_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
-  <testcase name="findByStartDateRange_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
-  <testcase name="findAll_returnsAllProjects()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
-  <testcase name="save_createsNewProject()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
-  <testcase name="findById_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
-  <system-out><![CDATA[2026-03-26T16:51:25.107+03:00  INFO 1702563 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.ProjectDaoTest]: ProjectDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-26T16:51:25.110+03:00  INFO 1702563 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.ProjectDaoTest
+  <testcase name="searchByName_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.008"/>
+  <testcase name="findByStartDateRange_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findByStatus_completed()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findByName_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findById_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.004"/>
+  <testcase name="findByStatus_active()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="searchByName_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.005"/>
+  <testcase name="findByName_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.005"/>
+  <testcase name="findByStartDateRange_notFound()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.006"/>
+  <testcase name="findAll_returnsAllProjects()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="save_createsNewProject()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.007"/>
+  <testcase name="findById_found()" classname="ru.msu.web.dao.ProjectDaoTest" time="0.01"/>
+  <system-out><![CDATA[2026-04-28T20:18:38.738+03:00  INFO 2212791 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.ProjectDaoTest]: ProjectDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-04-28T20:18:38.744+03:00  INFO 2212791 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.ProjectDaoTest
 Hibernate: 
     select
         p1_0.projectid,

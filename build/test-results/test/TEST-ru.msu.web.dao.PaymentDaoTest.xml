@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ru.msu.web.dao.PaymentDaoTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-03-26T13:51:24" hostname="cdecl" time="0.153">
+<testsuite name="ru.msu.web.dao.PaymentDaoTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:18:38" hostname="cdecl" time="0.161">
   <properties/>
-  <testcase name="findByEmployee_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.006"/>
-  <testcase name="findByAmountRange_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.013"/>
-  <testcase name="findByPolicyType_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.02"/>
-  <testcase name="getTotalByAssignment_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.009"/>
-  <testcase name="findByDateRange_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.006"/>
-  <testcase name="findAll_returnsAllPayments()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.018"/>
+  <testcase name="findByEmployee_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.009"/>
+  <testcase name="findByAmountRange_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.015"/>
+  <testcase name="findByPolicyType_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.018"/>
+  <testcase name="getTotalByAssignment_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.012"/>
+  <testcase name="findByDateRange_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.007"/>
+  <testcase name="findAll_returnsAllPayments()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.021"/>
   <testcase name="findByAmountRange_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.006"/>
-  <testcase name="findUnpaid_returnsUnpaidPayments()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.008"/>
-  <testcase name="save_createsNewPayment()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.008"/>
+  <testcase name="findUnpaid_returnsUnpaidPayments()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.009"/>
+  <testcase name="save_createsNewPayment()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.007"/>
   <testcase name="findById_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.005"/>
-  <testcase name="getTotalByEmployeeAndPeriod_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.008"/>
+  <testcase name="getTotalByEmployeeAndPeriod_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.007"/>
   <testcase name="findByEmployee_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.008"/>
   <testcase name="getTotalByAssignment_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.004"/>
-  <testcase name="findByDateRange_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.01"/>
-  <testcase name="getTotalByEmployeeAndPeriod_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.006"/>
-  <system-out><![CDATA[2026-03-26T16:51:24.797+03:00  INFO 1702563 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PaymentDaoTest]: PaymentDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-03-26T16:51:24.801+03:00  INFO 1702563 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PaymentDaoTest
+  <testcase name="findByDateRange_found()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.012"/>
+  <testcase name="getTotalByEmployeeAndPeriod_notFound()" classname="ru.msu.web.dao.PaymentDaoTest" time="0.005"/>
+  <system-out><![CDATA[2026-04-28T20:18:38.416+03:00  INFO 2212791 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [ru.msu.web.dao.PaymentDaoTest]: PaymentDaoTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-04-28T20:18:38.419+03:00  INFO 2212791 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration ru.msu.web.WebApplication for test class ru.msu.web.dao.PaymentDaoTest
 Hibernate: 
     select
         p1_0.paymentid,

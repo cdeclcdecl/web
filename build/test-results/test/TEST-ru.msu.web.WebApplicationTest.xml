@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ru.msu.web.WebApplicationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-04-28T17:17:46" hostname="cdecl" time="0.339">
+  <properties/>
+  <testcase name="configure_registersApplicationClass()" classname="ru.msu.web.WebApplicationTest" time="0.339"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

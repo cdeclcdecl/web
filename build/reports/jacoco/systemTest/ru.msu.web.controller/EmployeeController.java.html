@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">web</a> &gt; <a href="index.source.html" class="el_package">ru.msu.web.controller</a> &gt; <span class="el_source">EmployeeController.java</span></div><h1>EmployeeController.java</h1><pre class="source lang-java linenums">package ru.msu.web.controller;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ru.msu.web.dao.AssignmentDao;
+import ru.msu.web.dao.EmployeeDao;
+import ru.msu.web.dao.PositionDao;
+import ru.msu.web.dao.ProjectDao;
+import ru.msu.web.entity.Assignment;
+import ru.msu.web.entity.Employee;
+
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@Controller
+@RequestMapping(&quot;/employees&quot;)
+public class EmployeeController {
+
+    private final EmployeeDao employeeDao;
+    private final AssignmentDao assignmentDao;
+    private final PositionDao positionDao;
+    private final ProjectDao projectDao;
+
+    public EmployeeController(EmployeeDao employeeDao, AssignmentDao assignmentDao,
+<span class="fc" id="L30">                              PositionDao positionDao, ProjectDao projectDao) {</span>
+<span class="fc" id="L31">        this.employeeDao = employeeDao;</span>
+<span class="fc" id="L32">        this.assignmentDao = assignmentDao;</span>
+<span class="fc" id="L33">        this.positionDao = positionDao;</span>
+<span class="fc" id="L34">        this.projectDao = projectDao;</span>
+<span class="fc" id="L35">    }</span>
+
+    @GetMapping
+    public String list(@RequestParam(required = false) String search,
+                       @RequestParam(required = false, defaultValue = &quot;all&quot;) String status,
+                       @RequestParam(required = false) Integer seniorityMin,
+                       @RequestParam(required = false) Integer seniorityMax,
+                       @RequestParam(required = false) Long positionId,
+                       @RequestParam(required = false) Long projectId,
+                       @RequestParam(required = false, defaultValue = &quot;nameAsc&quot;) String sort,
+                       Model model) {
+<span class="fc" id="L46">        List&lt;Employee&gt; source = employeeDao.findAll();</span>
+<span class="fc" id="L47">        Map&lt;Long, String&gt; currentPositions = source.stream()</span>
+<span class="fc" id="L48">                .collect(Collectors.toMap(Employee::getEmployeeId, this::currentPosition));</span>
+<span class="fc" id="L49">        Map&lt;Long, Long&gt; projectCounts = source.stream()</span>
+<span class="fc" id="L50">                .collect(Collectors.toMap(Employee::getEmployeeId, this::projectCount));</span>
+
+<span class="fc" id="L52">        List&lt;Employee&gt; employees = source.stream()</span>
+<span class="pc bpc" id="L53" title="1 of 6 branches missed.">                .filter(employee -&gt; search == null || search.isBlank() || containsIgnoreCase(employee.getFullName(), search))</span>
+<span class="fc bfc" id="L54" title="All 4 branches covered.">                .filter(employee -&gt; !&quot;active&quot;.equals(status) || employee.isActive())</span>
+<span class="pc bpc" id="L55" title="3 of 4 branches missed.">                .filter(employee -&gt; !&quot;former&quot;.equals(status) || !employee.isActive())</span>
+<span class="pc bpc" id="L56" title="1 of 4 branches missed.">                .filter(employee -&gt; seniorityMin == null || employee.getSeniorityYears() &gt;= seniorityMin)</span>
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">                .filter(employee -&gt; seniorityMax == null || employee.getSeniorityYears() &lt;= seniorityMax)</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">                .filter(employee -&gt; positionId == null || hasCurrentPosition(employee, positionId))</span>
+<span class="fc bfc" id="L59" title="All 4 branches covered.">                .filter(employee -&gt; projectId == null || hasProject(employee, projectId))</span>
+<span class="fc" id="L60">                .sorted(employeeComparator(sort, currentPositions, projectCounts))</span>
+<span class="fc" id="L61">                .toList();</span>
+
+<span class="fc" id="L63">        model.addAttribute(&quot;employees&quot;, employees);</span>
+<span class="fc" id="L64">        model.addAttribute(&quot;currentPositions&quot;, currentPositions);</span>
+<span class="fc" id="L65">        model.addAttribute(&quot;projectCounts&quot;, projectCounts);</span>
+<span class="fc" id="L66">        model.addAttribute(&quot;positions&quot;, positionDao.findAll());</span>
+<span class="fc" id="L67">        model.addAttribute(&quot;projects&quot;, projectDao.findAll());</span>
+<span class="fc" id="L68">        model.addAttribute(&quot;search&quot;, search);</span>
+<span class="fc" id="L69">        model.addAttribute(&quot;status&quot;, status);</span>
+<span class="fc" id="L70">        model.addAttribute(&quot;seniorityMin&quot;, seniorityMin);</span>
+<span class="fc" id="L71">        model.addAttribute(&quot;seniorityMax&quot;, seniorityMax);</span>
+<span class="fc" id="L72">        model.addAttribute(&quot;positionId&quot;, positionId);</span>
+<span class="fc" id="L73">        model.addAttribute(&quot;projectId&quot;, projectId);</span>
+<span class="fc" id="L74">        model.addAttribute(&quot;sort&quot;, sort);</span>
+<span class="fc" id="L75">        return &quot;employees/list&quot;;</span>
+    }
+
+    @GetMapping(&quot;/{id:\\d+}&quot;)
+    public String view(@PathVariable Long id, Model model) {
+<span class="fc" id="L80">        Employee emp = employeeDao.findById(id);</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (emp == null) return &quot;redirect:/employees&quot;;</span>
+<span class="fc" id="L82">        model.addAttribute(&quot;employee&quot;, emp);</span>
+<span class="fc" id="L83">        model.addAttribute(&quot;assignments&quot;, assignmentDao.getEmployeeAssignments(id));</span>
+<span class="fc" id="L84">        return &quot;employees/view&quot;;</span>
+    }
+
+    @GetMapping(&quot;/new&quot;)
+    public String newForm(Model model) {
+<span class="fc" id="L89">        model.addAttribute(&quot;employee&quot;, new Employee());</span>
+<span class="fc" id="L90">        return &quot;employees/form&quot;;</span>
+    }
+
+    @PostMapping(&quot;/new&quot;)
+    public String create(@RequestParam(required = false) String fullName,
+                         @RequestParam(required = false) String address,
+                         @RequestParam(required = false) String birthDate,
+                         @RequestParam(required = false) String degree,
+                         @RequestParam(required = false) String hireDate,
+                         @RequestParam(required = false) String email,
+                         @RequestParam(required = false) String phoneNumber,
+                         Model model) {
+<span class="pc bpc" id="L102" title="1 of 4 branches missed.">        if (fullName == null || fullName.isBlank()) {</span>
+<span class="fc" id="L103">            model.addAttribute(&quot;error&quot;, &quot;ФИО обязательно для заполнения&quot;);</span>
+<span class="fc" id="L104">            model.addAttribute(&quot;employee&quot;, new Employee());</span>
+<span class="fc" id="L105">            return &quot;employees/form&quot;;</span>
+        }
+<span class="pc bpc" id="L107" title="1 of 4 branches missed.">        if (birthDate == null || birthDate.isBlank()) {</span>
+<span class="fc" id="L108">            model.addAttribute(&quot;error&quot;, &quot;Дата рождения обязательна для заполнения&quot;);</span>
+<span class="fc" id="L109">            model.addAttribute(&quot;employee&quot;, new Employee());</span>
+<span class="fc" id="L110">            return &quot;employees/form&quot;;</span>
+        }
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">        if (hireDate == null || hireDate.isBlank()) {</span>
+<span class="nc" id="L113">            model.addAttribute(&quot;error&quot;, &quot;Дата найма обязательна для заполнения&quot;);</span>
+<span class="nc" id="L114">            model.addAttribute(&quot;employee&quot;, new Employee());</span>
+<span class="nc" id="L115">            return &quot;employees/form&quot;;</span>
+        }
+<span class="pc bpc" id="L117" title="2 of 6 branches missed.">        if (email != null &amp;&amp; !email.isBlank() &amp;&amp; employeeDao.findByEmail(email) != null) {</span>
+<span class="fc" id="L118">            model.addAttribute(&quot;error&quot;, &quot;Сотрудник с таким email уже существует&quot;);</span>
+<span class="fc" id="L119">            model.addAttribute(&quot;employee&quot;, new Employee());</span>
+<span class="fc" id="L120">            return &quot;employees/form&quot;;</span>
+        }
+<span class="fc" id="L122">        Employee emp = new Employee();</span>
+<span class="fc" id="L123">        emp.setFullName(fullName);</span>
+<span class="fc" id="L124">        emp.setAddress(address);</span>
+<span class="fc" id="L125">        emp.setBirthDate(LocalDate.parse(birthDate));</span>
+<span class="fc" id="L126">        emp.setDegree(degree);</span>
+<span class="fc" id="L127">        emp.setHireDate(LocalDate.parse(hireDate));</span>
+<span class="pc bpc" id="L128" title="2 of 4 branches missed.">        emp.setEmail(email != null &amp;&amp; !email.isBlank() ? email : null);</span>
+<span class="fc" id="L129">        emp.setPhoneNumber(phoneNumber);</span>
+<span class="fc" id="L130">        employeeDao.save(emp);</span>
+<span class="fc" id="L131">        return &quot;redirect:/employees&quot;;</span>
+    }
+
+    @GetMapping(&quot;/{id:\\d+}/edit&quot;)
+    public String editForm(@PathVariable Long id, Model model) {
+<span class="fc" id="L136">        Employee emp = employeeDao.findById(id);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (emp == null) return &quot;redirect:/employees&quot;;</span>
+<span class="fc" id="L138">        model.addAttribute(&quot;employee&quot;, emp);</span>
+<span class="fc" id="L139">        return &quot;employees/form&quot;;</span>
+    }
+
+    @PostMapping(&quot;/{id:\\d+}/edit&quot;)
+    public String update(@PathVariable Long id,
+                         @RequestParam(required = false) String fullName,
+                         @RequestParam(required = false) String address,
+                         @RequestParam(required = false) String birthDate,
+                         @RequestParam(required = false) String degree,
+                         @RequestParam(required = false) String hireDate,
+                         @RequestParam(required = false) String email,
+                         @RequestParam(required = false) String phoneNumber,
+                         Model model) {
+<span class="fc" id="L152">        Employee emp = employeeDao.findById(id);</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        if (emp == null) return &quot;redirect:/employees&quot;;</span>
+<span class="pc bpc" id="L154" title="2 of 4 branches missed.">        if (fullName == null || fullName.isBlank()) {</span>
+<span class="nc" id="L155">            model.addAttribute(&quot;error&quot;, &quot;ФИО обязательно для заполнения&quot;);</span>
+<span class="nc" id="L156">            model.addAttribute(&quot;employee&quot;, emp);</span>
+<span class="nc" id="L157">            return &quot;employees/form&quot;;</span>
+        }
+<span class="pc bpc" id="L159" title="2 of 4 branches missed.">        if (birthDate == null || birthDate.isBlank()) {</span>
+<span class="nc" id="L160">            model.addAttribute(&quot;error&quot;, &quot;Дата рождения обязательна для заполнения&quot;);</span>
+<span class="nc" id="L161">            model.addAttribute(&quot;employee&quot;, emp);</span>
+<span class="nc" id="L162">            return &quot;employees/form&quot;;</span>
+        }
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">        if (hireDate == null || hireDate.isBlank()) {</span>
+<span class="nc" id="L165">            model.addAttribute(&quot;error&quot;, &quot;Дата найма обязательна для заполнения&quot;);</span>
+<span class="nc" id="L166">            model.addAttribute(&quot;employee&quot;, emp);</span>
+<span class="nc" id="L167">            return &quot;employees/form&quot;;</span>
+        }
+<span class="pc bpc" id="L169" title="2 of 4 branches missed.">        if (email != null &amp;&amp; !email.isBlank()) {</span>
+<span class="fc" id="L170">            Employee existing = employeeDao.findByEmail(email);</span>
+<span class="pc bpc" id="L171" title="2 of 4 branches missed.">            if (existing != null &amp;&amp; !existing.getEmployeeId().equals(id)) {</span>
+<span class="nc" id="L172">                model.addAttribute(&quot;error&quot;, &quot;Сотрудник с таким email уже существует&quot;);</span>
+<span class="nc" id="L173">                model.addAttribute(&quot;employee&quot;, emp);</span>
+<span class="nc" id="L174">                return &quot;employees/form&quot;;</span>
+            }
+        }
+<span class="fc" id="L177">        emp.setFullName(fullName);</span>
+<span class="fc" id="L178">        emp.setAddress(address);</span>
+<span class="fc" id="L179">        emp.setBirthDate(LocalDate.parse(birthDate));</span>
+<span class="fc" id="L180">        emp.setDegree(degree);</span>
+<span class="fc" id="L181">        emp.setHireDate(LocalDate.parse(hireDate));</span>
+<span class="pc bpc" id="L182" title="2 of 4 branches missed.">        emp.setEmail(email != null &amp;&amp; !email.isBlank() ? email : null);</span>
+<span class="fc" id="L183">        emp.setPhoneNumber(phoneNumber);</span>
+<span class="fc" id="L184">        employeeDao.save(emp);</span>
+<span class="fc" id="L185">        return &quot;redirect:/employees/&quot; + id;</span>
+    }
+
+    @PostMapping(&quot;/{id:\\d+}/fire&quot;)
+    public String fire(@PathVariable Long id,
+                       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate leaveDate) {
+<span class="fc" id="L191">        employeeDao.fireEmployee(id, leaveDate);</span>
+<span class="fc" id="L192">        return &quot;redirect:/employees/&quot; + id;</span>
+    }
+
+    private boolean containsIgnoreCase(String value, String query) {
+<span class="pc bpc" id="L196" title="1 of 4 branches missed.">        return value != null &amp;&amp; value.toLowerCase().contains(query.toLowerCase());</span>
+    }
+
+    private boolean hasCurrentPosition(Employee employee, Long positionId) {
+<span class="fc" id="L200">        return employee.getAssignments().stream()</span>
+<span class="fc" id="L201">                .filter(Assignment::isActive)</span>
+<span class="fc" id="L202">                .anyMatch(assignment -&gt; assignment.getPosition().getPositionId().equals(positionId));</span>
+    }
+
+    private boolean hasProject(Employee employee, Long projectId) {
+<span class="fc" id="L206">        return employee.getAssignments().stream()</span>
+<span class="fc" id="L207">                .anyMatch(assignment -&gt; assignment.getProject().getProjectId().equals(projectId));</span>
+    }
+
+    private String currentPosition(Employee employee) {
+<span class="fc" id="L211">        String value = employee.getAssignments().stream()</span>
+<span class="fc" id="L212">                .filter(Assignment::isActive)</span>
+<span class="fc" id="L213">                .map(assignment -&gt; assignment.getPosition().getName())</span>
+<span class="fc" id="L214">                .distinct()</span>
+<span class="fc" id="L215">                .sorted()</span>
+<span class="fc" id="L216">                .collect(Collectors.joining(&quot;, &quot;));</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        return value.isBlank() ? &quot;-&quot; : value;</span>
+    }
+
+    private long projectCount(Employee employee) {
+<span class="fc" id="L221">        return employee.getAssignments().stream()</span>
+<span class="fc" id="L222">                .map(assignment -&gt; assignment.getProject().getProjectId())</span>
+<span class="fc" id="L223">                .distinct()</span>
+<span class="fc" id="L224">                .count();</span>
+    }
+
+    private Comparator&lt;Employee&gt; employeeComparator(String sort, Map&lt;Long, String&gt; currentPositions,
+                                                    Map&lt;Long, Long&gt; projectCounts) {
+<span class="fc" id="L229">        Comparator&lt;Employee&gt; comparator = Comparator.comparing(Employee::getFullName, String.CASE_INSENSITIVE_ORDER);</span>
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (&quot;nameDesc&quot;.equals(sort)) {</span>
+<span class="nc" id="L231">            comparator = comparator.reversed();</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        } else if (&quot;hireDateAsc&quot;.equals(sort)) {</span>
+<span class="nc" id="L233">            comparator = Comparator.comparing(Employee::getHireDate, Comparator.nullsLast(LocalDate::compareTo));</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        } else if (&quot;hireDateDesc&quot;.equals(sort)) {</span>
+<span class="nc" id="L235">            comparator = Comparator.comparing(Employee::getHireDate, Comparator.nullsLast(LocalDate::compareTo)).reversed();</span>
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">        } else if (&quot;birthDateAsc&quot;.equals(sort)) {</span>
+<span class="nc" id="L237">            comparator = Comparator.comparing(Employee::getBirthDate, Comparator.nullsLast(LocalDate::compareTo));</span>
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">        } else if (&quot;birthDateDesc&quot;.equals(sort)) {</span>
+<span class="nc" id="L239">            comparator = Comparator.comparing(Employee::getBirthDate, Comparator.nullsLast(LocalDate::compareTo)).reversed();</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        } else if (&quot;positionAsc&quot;.equals(sort)) {</span>
+<span class="fc" id="L241">            comparator = Comparator.comparing(employee -&gt; currentPositions.get(employee.getEmployeeId()), String.CASE_INSENSITIVE_ORDER);</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        } else if (&quot;projectsDesc&quot;.equals(sort)) {</span>
+<span class="fc" id="L243">            comparator = Comparator.comparing((Employee employee) -&gt; projectCounts.get(employee.getEmployeeId())).reversed()</span>
+<span class="fc" id="L244">                    .thenComparing(Employee::getFullName, String.CASE_INSENSITIVE_ORDER);</span>
+        }
+<span class="fc" id="L246">        return comparator;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PaymentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">web</a> &gt; <a href="index.source.html" class="el_package">ru.msu.web.controller</a> &gt; <span class="el_source">PaymentController.java</span></div><h1>PaymentController.java</h1><pre class="source lang-java linenums">package ru.msu.web.controller;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import ru.msu.web.dao.AssignmentDao;
+import ru.msu.web.dao.EmployeeDao;
+import ru.msu.web.dao.PaymentDao;
+import ru.msu.web.dao.PaymentPolicyDao;
+import ru.msu.web.dao.ProjectDao;
+import ru.msu.web.entity.Payment;
+import ru.msu.web.entity.PolicyType;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+@Controller
+@RequestMapping(&quot;/payments&quot;)
+public class PaymentController {
+
+    private final PaymentDao paymentDao;
+    private final EmployeeDao employeeDao;
+    private final AssignmentDao assignmentDao;
+    private final PaymentPolicyDao paymentPolicyDao;
+    private final ProjectDao projectDao;
+    private final ObjectMapper objectMapper;
+
+    public PaymentController(PaymentDao paymentDao, EmployeeDao employeeDao,
+                             AssignmentDao assignmentDao, PaymentPolicyDao paymentPolicyDao,
+<span class="fc" id="L47">                             ProjectDao projectDao, ObjectMapper objectMapper) {</span>
+<span class="fc" id="L48">        this.paymentDao = paymentDao;</span>
+<span class="fc" id="L49">        this.employeeDao = employeeDao;</span>
+<span class="fc" id="L50">        this.assignmentDao = assignmentDao;</span>
+<span class="fc" id="L51">        this.paymentPolicyDao = paymentPolicyDao;</span>
+<span class="fc" id="L52">        this.projectDao = projectDao;</span>
+<span class="fc" id="L53">        this.objectMapper = objectMapper;</span>
+<span class="fc" id="L54">    }</span>
+
+    @GetMapping
+    public String list(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+                       @RequestParam(required = false) BigDecimal amountMin,
+                       @RequestParam(required = false) BigDecimal amountMax,
+                       @RequestParam(required = false) String type,
+                       @RequestParam(required = false) Long employeeId,
+                       @RequestParam(required = false) Long policyId,
+                       @RequestParam(required = false) Long projectId,
+                       @RequestParam(required = false, defaultValue = &quot;dateDesc&quot;) String sort,
+                       Model model) {
+<span class="fc" id="L67">        populateListModel(model, dateFrom, dateTo, amountMin, amountMax, type, employeeId, policyId, projectId, sort, false);</span>
+<span class="fc" id="L68">        return &quot;payments/list&quot;;</span>
+    }
+
+    @GetMapping(&quot;/print&quot;)
+    public String print(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+                        @RequestParam(required = false) BigDecimal amountMin,
+                        @RequestParam(required = false) BigDecimal amountMax,
+                        @RequestParam(required = false) String type,
+                        @RequestParam(required = false) Long employeeId,
+                        @RequestParam(required = false) Long policyId,
+                        @RequestParam(required = false) Long projectId,
+                        @RequestParam(required = false, defaultValue = &quot;dateDesc&quot;) String sort,
+                        Model model) {
+<span class="fc" id="L82">        populateListModel(model, dateFrom, dateTo, amountMin, amountMax, type, employeeId, policyId, projectId, sort, true);</span>
+<span class="fc" id="L83">        return &quot;payments/list&quot;;</span>
+    }
+
+    @GetMapping(value = &quot;/export&quot;, produces = &quot;text/csv;charset=UTF-8&quot;)
+    @ResponseBody
+    public ResponseEntity&lt;String&gt; export(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo,
+                                         @RequestParam(required = false) BigDecimal amountMin,
+                                         @RequestParam(required = false) BigDecimal amountMax,
+                                         @RequestParam(required = false) String type,
+                                         @RequestParam(required = false) Long employeeId,
+                                         @RequestParam(required = false) Long policyId,
+                                         @RequestParam(required = false) Long projectId,
+                                         @RequestParam(required = false, defaultValue = &quot;dateDesc&quot;) String sort) {
+<span class="fc" id="L97">        List&lt;Payment&gt; payments = filterPayments(dateFrom, dateTo, amountMin, amountMax, type, employeeId, policyId, projectId, sort);</span>
+<span class="fc" id="L98">        Map&lt;Long, Map&lt;String, String&gt;&gt; meta = buildPaymentMeta(payments);</span>
+<span class="fc" id="L99">        StringBuilder csv = new StringBuilder(&quot;id,employee,project,position,type,amount,paymentDate,status,reason\n&quot;);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (Payment payment : payments) {</span>
+<span class="fc" id="L101">            Map&lt;String, String&gt; values = meta.get(payment.getPaymentId());</span>
+<span class="fc" id="L102">            csv.append(payment.getPaymentId()).append(',')</span>
+<span class="fc" id="L103">                    .append(csv(values.get(&quot;employeeName&quot;))).append(',')</span>
+<span class="fc" id="L104">                    .append(csv(values.get(&quot;projectName&quot;))).append(',')</span>
+<span class="fc" id="L105">                    .append(csv(values.get(&quot;positionName&quot;))).append(',')</span>
+<span class="fc" id="L106">                    .append(csv(values.get(&quot;typeLabel&quot;))).append(',')</span>
+<span class="fc" id="L107">                    .append(payment.getAmount()).append(',')</span>
+<span class="fc" id="L108">                    .append(payment.getPaymentDate()).append(',')</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                    .append(payment.isTransactioned() ? &quot;paid&quot; : &quot;unpaid&quot;).append(',')</span>
+<span class="fc" id="L110">                    .append(csv(values.get(&quot;reason&quot;)))</span>
+<span class="fc" id="L111">                    .append('\n');</span>
+<span class="fc" id="L112">        }</span>
+<span class="fc" id="L113">        return ResponseEntity.ok()</span>
+<span class="fc" id="L114">                .header(HttpHeaders.CONTENT_DISPOSITION, &quot;attachment; filename=payments.csv&quot;)</span>
+<span class="fc" id="L115">                .contentType(new MediaType(&quot;text&quot;, &quot;csv&quot;))</span>
+<span class="fc" id="L116">                .body(csv.toString());</span>
+    }
+
+    @GetMapping(&quot;/new&quot;)
+    public String newForm(Model model) {
+<span class="fc" id="L121">        populateForm(model, new Payment(), null, null);</span>
+<span class="fc" id="L122">        return &quot;payments/form&quot;;</span>
+    }
+
+    @GetMapping(&quot;/{id:\\d+}/edit&quot;)
+    public String editForm(@PathVariable Long id, Model model) {
+<span class="fc" id="L127">        Payment payment = paymentDao.findById(id);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (payment == null) {</span>
+<span class="nc" id="L129">            return &quot;redirect:/payments&quot;;</span>
+        }
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        Long selectedEmployeeId = payment.getAssignment() == null ? null : payment.getAssignment().getEmployee().getEmployeeId();</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        Long selectedAssignmentId = payment.getAssignment() == null ? null : payment.getAssignment().getAssignmentId();</span>
+<span class="fc" id="L133">        populateForm(model, payment, selectedEmployeeId, selectedAssignmentId);</span>
+<span class="fc" id="L134">        return &quot;payments/form&quot;;</span>
+    }
+
+    @GetMapping(&quot;/new/assignments&quot;)
+    @ResponseBody
+    public Object assignmentsByEmployee(@RequestParam Long employeeId) {
+<span class="fc" id="L140">        return assignmentDao.getEmployeeAssignments(employeeId);</span>
+    }
+
+    @PostMapping(&quot;/new&quot;)
+    public String create(@RequestParam(required = false) Long employeeId,
+                         @RequestParam(required = false) Long assignmentId,
+                         @RequestParam(required = false) Long policyId,
+                         @RequestParam String amount,
+                         @RequestParam(required = false) String periodStart,
+                         @RequestParam(required = false) String periodEnd,
+                         @RequestParam(required = false) String paymentDate,
+                         @RequestParam(defaultValue = &quot;false&quot;) boolean transactioned,
+                         Model model) {
+<span class="fc" id="L153">        return savePayment(new Payment(), employeeId, assignmentId, policyId, amount, periodStart, periodEnd, paymentDate, transactioned, model);</span>
+    }
+
+    @PostMapping(&quot;/{id:\\d+}/edit&quot;)
+    public String update(@PathVariable Long id,
+                         @RequestParam(required = false) Long employeeId,
+                         @RequestParam(required = false) Long assignmentId,
+                         @RequestParam(required = false) Long policyId,
+                         @RequestParam String amount,
+                         @RequestParam(required = false) String periodStart,
+                         @RequestParam(required = false) String periodEnd,
+                         @RequestParam(required = false) String paymentDate,
+                         @RequestParam(defaultValue = &quot;false&quot;) boolean transactioned,
+                         Model model) {
+<span class="fc" id="L167">        Payment payment = paymentDao.findById(id);</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (payment == null) {</span>
+<span class="nc" id="L169">            return &quot;redirect:/payments&quot;;</span>
+        }
+<span class="fc" id="L171">        return savePayment(payment, employeeId, assignmentId, policyId, amount, periodStart, periodEnd, paymentDate, transactioned, model);</span>
+    }
+
+    private String savePayment(Payment payment, Long employeeId, Long assignmentId, Long policyId,
+                               String amount, String periodStart, String periodEnd,
+                               String paymentDate, boolean transactioned, Model model) {
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">        if (amount == null || amount.isBlank()) {</span>
+<span class="nc" id="L178">            model.addAttribute(&quot;error&quot;, &quot;Сумма обязательна для заполнения&quot;);</span>
+<span class="nc" id="L179">            populateForm(model, payment, employeeId, assignmentId);</span>
+<span class="nc" id="L180">            return &quot;payments/form&quot;;</span>
+        }
+        BigDecimal parsedAmount;
+        try {
+<span class="fc" id="L184">            parsedAmount = new BigDecimal(amount);</span>
+<span class="nc" id="L185">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L186">            model.addAttribute(&quot;error&quot;, &quot;Некорректная сумма выплаты&quot;);</span>
+<span class="nc" id="L187">            populateForm(model, payment, employeeId, assignmentId);</span>
+<span class="nc" id="L188">            return &quot;payments/form&quot;;</span>
+<span class="fc" id="L189">        }</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        payment.setAssignment(assignmentId == null ? null : assignmentDao.findById(assignmentId));</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        payment.setPolicy(policyId == null ? null : paymentPolicyDao.findById(policyId));</span>
+<span class="fc" id="L192">        payment.setAmount(parsedAmount);</span>
+<span class="fc" id="L193">        payment.setPeriodStart(parseDate(periodStart));</span>
+<span class="fc" id="L194">        payment.setPeriodEnd(parseDate(periodEnd));</span>
+<span class="fc" id="L195">        payment.setPaymentDate(parseDate(paymentDate));</span>
+<span class="fc" id="L196">        payment.setTransactioned(transactioned);</span>
+<span class="fc" id="L197">        paymentDao.save(payment);</span>
+<span class="fc" id="L198">        return &quot;redirect:/payments&quot;;</span>
+    }
+
+    private void populateForm(Model model, Payment payment, Long selectedEmployeeId, Long selectedAssignmentId) {
+<span class="fc" id="L202">        model.addAttribute(&quot;payment&quot;, payment);</span>
+<span class="fc" id="L203">        model.addAttribute(&quot;employees&quot;, employeeDao.findAll());</span>
+<span class="fc" id="L204">        model.addAttribute(&quot;policies&quot;, paymentPolicyDao.findAll());</span>
+<span class="fc" id="L205">        model.addAttribute(&quot;selectedEmployeeId&quot;, selectedEmployeeId);</span>
+<span class="fc" id="L206">        model.addAttribute(&quot;selectedAssignmentId&quot;, selectedAssignmentId);</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        model.addAttribute(&quot;selectedPolicyId&quot;, payment.getPolicy() == null ? null : payment.getPolicy().getPolicyId());</span>
+<span class="fc" id="L208">    }</span>
+
+    private void populateListModel(Model model, LocalDate dateFrom, LocalDate dateTo,
+                                   BigDecimal amountMin, BigDecimal amountMax, String type,
+                                   Long employeeId, Long policyId, Long projectId,
+                                   String sort, boolean printMode) {
+<span class="fc" id="L214">        List&lt;Payment&gt; payments = filterPayments(dateFrom, dateTo, amountMin, amountMax, type, employeeId, policyId, projectId, sort);</span>
+<span class="fc" id="L215">        model.addAttribute(&quot;payments&quot;, payments);</span>
+<span class="fc" id="L216">        model.addAttribute(&quot;paymentMeta&quot;, buildPaymentMeta(payments));</span>
+<span class="fc" id="L217">        model.addAttribute(&quot;employees&quot;, employeeDao.findAll());</span>
+<span class="fc" id="L218">        model.addAttribute(&quot;policies&quot;, paymentPolicyDao.findAll());</span>
+<span class="fc" id="L219">        model.addAttribute(&quot;projects&quot;, projectDao.findAll());</span>
+<span class="fc" id="L220">        model.addAttribute(&quot;policyTypes&quot;, PolicyType.values());</span>
+<span class="fc" id="L221">        model.addAttribute(&quot;dateFrom&quot;, dateFrom);</span>
+<span class="fc" id="L222">        model.addAttribute(&quot;dateTo&quot;, dateTo);</span>
+<span class="fc" id="L223">        model.addAttribute(&quot;amountMin&quot;, amountMin);</span>
+<span class="fc" id="L224">        model.addAttribute(&quot;amountMax&quot;, amountMax);</span>
+<span class="fc" id="L225">        model.addAttribute(&quot;type&quot;, type);</span>
+<span class="fc" id="L226">        model.addAttribute(&quot;employeeId&quot;, employeeId);</span>
+<span class="fc" id="L227">        model.addAttribute(&quot;policyId&quot;, policyId);</span>
+<span class="fc" id="L228">        model.addAttribute(&quot;projectId&quot;, projectId);</span>
+<span class="fc" id="L229">        model.addAttribute(&quot;sort&quot;, sort);</span>
+<span class="fc" id="L230">        model.addAttribute(&quot;printMode&quot;, printMode);</span>
+<span class="fc" id="L231">        model.addAttribute(&quot;totalAmount&quot;, sum(payments));</span>
+<span class="fc" id="L232">        model.addAttribute(&quot;salaryTotal&quot;, sumByType(payments, PolicyType.salary));</span>
+<span class="fc" id="L233">        model.addAttribute(&quot;seniorityTotal&quot;, sumByType(payments, PolicyType.seniority));</span>
+<span class="fc" id="L234">        model.addAttribute(&quot;calendarBonusTotal&quot;, sumByType(payments, PolicyType.calendar_bonus));</span>
+<span class="fc" id="L235">        model.addAttribute(&quot;oneTimeBonusTotal&quot;, sumByType(payments, PolicyType.one_time_bonus));</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        model.addAttribute(&quot;unpaidCount&quot;, payments.stream().filter(payment -&gt; !payment.isTransactioned()).count());</span>
+<span class="fc" id="L237">        model.addAttribute(&quot;reportTitle&quot;, reportTitle(type, employeeId));</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (employeeId != null) {</span>
+<span class="fc" id="L239">            model.addAttribute(&quot;averageMonthly&quot;, averageMonthly(sum(payments), dateFrom, dateTo));</span>
+        }
+<span class="fc" id="L241">    }</span>
+
+    private List&lt;Payment&gt; filterPayments(LocalDate dateFrom, LocalDate dateTo,
+                                         BigDecimal amountMin, BigDecimal amountMax, String type,
+                                         Long employeeId, Long policyId, Long projectId, String sort) {
+<span class="fc" id="L246">        return paymentDao.findAll().stream()</span>
+<span class="fc bfc" id="L247" title="All 6 branches covered.">                .filter(payment -&gt; dateFrom == null || payment.getPaymentDate() != null &amp;&amp; !payment.getPaymentDate().isBefore(dateFrom))</span>
+<span class="pc bpc" id="L248" title="1 of 6 branches missed.">                .filter(payment -&gt; dateTo == null || payment.getPaymentDate() != null &amp;&amp; !payment.getPaymentDate().isAfter(dateTo))</span>
+<span class="pc bpc" id="L249" title="3 of 4 branches missed.">                .filter(payment -&gt; amountMin == null || payment.getAmount().compareTo(amountMin) &gt;= 0)</span>
+<span class="pc bpc" id="L250" title="3 of 4 branches missed.">                .filter(payment -&gt; amountMax == null || payment.getAmount().compareTo(amountMax) &lt;= 0)</span>
+<span class="pc bpc" id="L251" title="1 of 8 branches missed.">                .filter(payment -&gt; type == null || type.isBlank() || payment.getPolicy() != null &amp;&amp; payment.getPolicy().getPolicyType().name().equals(type))</span>
+<span class="pc bpc" id="L252" title="1 of 6 branches missed.">                .filter(payment -&gt; employeeId == null || payment.getAssignment() != null &amp;&amp; payment.getAssignment().getEmployee().getEmployeeId().equals(employeeId))</span>
+<span class="pc bpc" id="L253" title="5 of 6 branches missed.">                .filter(payment -&gt; policyId == null || payment.getPolicy() != null &amp;&amp; payment.getPolicy().getPolicyId().equals(policyId))</span>
+<span class="fc bfc" id="L254" title="All 6 branches covered.">                .filter(payment -&gt; projectId == null || payment.getAssignment() != null &amp;&amp; payment.getAssignment().getProject().getProjectId().equals(projectId))</span>
+<span class="fc" id="L255">                .sorted(paymentComparator(sort))</span>
+<span class="fc" id="L256">                .toList();</span>
+    }
+
+    private Comparator&lt;Payment&gt; paymentComparator(String sort) {
+<span class="fc" id="L260">        Comparator&lt;Payment&gt; comparator = Comparator.comparing(Payment::getPaymentDate, Comparator.nullsLast(LocalDate::compareTo)).reversed();</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (&quot;dateAsc&quot;.equals(sort)) {</span>
+<span class="nc" id="L262">            comparator = Comparator.comparing(Payment::getPaymentDate, Comparator.nullsLast(LocalDate::compareTo));</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        } else if (&quot;amountAsc&quot;.equals(sort)) {</span>
+<span class="fc" id="L264">            comparator = Comparator.comparing(Payment::getAmount, Comparator.nullsLast(BigDecimal::compareTo));</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">        } else if (&quot;amountDesc&quot;.equals(sort)) {</span>
+<span class="nc" id="L266">            comparator = Comparator.comparing(Payment::getAmount, Comparator.nullsLast(BigDecimal::compareTo)).reversed();</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">        } else if (&quot;employeeAsc&quot;.equals(sort)) {</span>
+<span class="nc" id="L268">            comparator = Comparator.comparing(this::employeeName, String.CASE_INSENSITIVE_ORDER);</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        } else if (&quot;employeeDesc&quot;.equals(sort)) {</span>
+<span class="fc" id="L270">            comparator = Comparator.comparing(this::employeeName, String.CASE_INSENSITIVE_ORDER).reversed();</span>
+        }
+<span class="fc" id="L272">        return comparator;</span>
+    }
+
+    private Map&lt;Long, Map&lt;String, String&gt;&gt; buildPaymentMeta(List&lt;Payment&gt; payments) {
+<span class="fc" id="L276">        Map&lt;Long, Map&lt;String, String&gt;&gt; meta = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">        for (Payment payment : payments) {</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">            Map&lt;String, Object&gt; info = payment.getPolicy() == null ? Map.of() : parseInfo(payment.getPolicy().getInfo());</span>
+<span class="fc" id="L279">            Map&lt;String, String&gt; values = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L280">            values.put(&quot;employeeName&quot;, employeeName(payment));</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">            values.put(&quot;projectName&quot;, payment.getAssignment() == null ? &quot;-&quot; : payment.getAssignment().getProject().getProjectName());</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">            values.put(&quot;positionName&quot;, payment.getAssignment() == null ? &quot;-&quot; : payment.getAssignment().getPosition().getName());</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">            values.put(&quot;typeLabel&quot;, typeLabel(payment.getPolicy() == null ? null : payment.getPolicy().getPolicyType()));</span>
+<span class="fc" id="L284">            values.put(&quot;reason&quot;, firstNonBlank(text(info, &quot;eventType&quot;), text(info, &quot;reason&quot;), text(info, &quot;description&quot;), &quot;-&quot;));</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">            values.put(&quot;policyLabel&quot;, payment.getPolicy() == null ? &quot;-&quot; : payment.getPolicy().getPolicyType() + &quot; #&quot; + payment.getPolicy().getPolicyId());</span>
+<span class="fc" id="L286">            meta.put(payment.getPaymentId(), values);</span>
+<span class="fc" id="L287">        }</span>
+<span class="fc" id="L288">        return meta;</span>
+    }
+
+    private Map&lt;String, Object&gt; parseInfo(String info) {
+<span class="pc bpc" id="L292" title="2 of 4 branches missed.">        if (info == null || info.isBlank()) {</span>
+<span class="nc" id="L293">            return Map.of();</span>
+        }
+        try {
+<span class="fc" id="L296">            return objectMapper.readValue(info, new TypeReference&lt;Map&lt;String, Object&gt;&gt;() {});</span>
+<span class="nc" id="L297">        } catch (Exception e) {</span>
+<span class="nc" id="L298">            return Map.of();</span>
+        }
+    }
+
+    private String employeeName(Payment payment) {
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        return payment.getAssignment() == null ? &quot;&quot; : payment.getAssignment().getEmployee().getFullName();</span>
+    }
+
+    private String typeLabel(PolicyType type) {
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        if (type == null) {</span>
+<span class="fc" id="L308">            return &quot;Без политики&quot;;</span>
+        }
+<span class="pc bpc" id="L310" title="1 of 4 branches missed.">        return switch (type) {</span>
+<span class="fc" id="L311">            case salary -&gt; &quot;Зарплата&quot;;</span>
+<span class="nc" id="L312">            case seniority -&gt; &quot;Бонус за стаж&quot;;</span>
+<span class="fc" id="L313">            case calendar_bonus -&gt; &quot;Календарная премия&quot;;</span>
+<span class="fc" id="L314">            case one_time_bonus -&gt; &quot;Разовый бонус&quot;;</span>
+        };
+    }
+
+    private String text(Map&lt;String, Object&gt; info, String key) {
+<span class="fc" id="L319">        Object value = info.get(key);</span>
+<span class="fc bfc" id="L320" title="All 2 branches covered.">        return value == null ? &quot;&quot; : String.valueOf(value);</span>
+    }
+
+    private String firstNonBlank(String... values) {
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        for (String value : values) {</span>
+<span class="pc bpc" id="L325" title="1 of 4 branches missed.">            if (value != null &amp;&amp; !value.isBlank()) {</span>
+<span class="fc" id="L326">                return value;</span>
+            }
+        }
+<span class="nc" id="L329">        return &quot;&quot;;</span>
+    }
+
+    private BigDecimal sum(List&lt;Payment&gt; payments) {
+<span class="fc" id="L333">        return payments.stream()</span>
+<span class="fc" id="L334">                .map(Payment::getAmount)</span>
+<span class="fc" id="L335">                .reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+    }
+
+    private BigDecimal sumByType(List&lt;Payment&gt; payments, PolicyType type) {
+<span class="fc" id="L339">        return payments.stream()</span>
+<span class="fc bfc" id="L340" title="All 4 branches covered.">                .filter(payment -&gt; payment.getPolicy() != null &amp;&amp; payment.getPolicy().getPolicyType() == type)</span>
+<span class="fc" id="L341">                .map(Payment::getAmount)</span>
+<span class="fc" id="L342">                .reduce(BigDecimal.ZERO, BigDecimal::add);</span>
+    }
+
+    private BigDecimal averageMonthly(BigDecimal total, LocalDate dateFrom, LocalDate dateTo) {
+<span class="pc bpc" id="L346" title="3 of 6 branches missed.">        if (dateFrom == null || dateTo == null || dateTo.isBefore(dateFrom)) {</span>
+<span class="nc" id="L347">            return total;</span>
+        }
+<span class="fc" id="L349">        long months = ChronoUnit.MONTHS.between(dateFrom.withDayOfMonth(1), dateTo.withDayOfMonth(1)) + 1;</span>
+<span class="fc" id="L350">        return total.divide(BigDecimal.valueOf(Math.max(months, 1)), 2, RoundingMode.HALF_UP);</span>
+    }
+
+    private String reportTitle(String type, Long employeeId) {
+<span class="fc bfc" id="L354" title="All 2 branches covered.">        if (employeeId != null) {</span>
+<span class="fc" id="L355">            return &quot;Отчёт по расходам на сотрудника&quot;;</span>
+        }
+<span class="fc bfc" id="L357" title="All 2 branches covered.">        if (PolicyType.salary.name().equals(type)) {</span>
+<span class="fc" id="L358">            return &quot;Ведомость по зарплате&quot;;</span>
+        }
+<span class="pc bpc" id="L360" title="2 of 4 branches missed.">        if (PolicyType.calendar_bonus.name().equals(type) || PolicyType.one_time_bonus.name().equals(type)) {</span>
+<span class="nc" id="L361">            return &quot;Отчёт по премиям и бонусам&quot;;</span>
+        }
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">        if (PolicyType.seniority.name().equals(type)) {</span>
+<span class="nc" id="L364">            return &quot;Отчёт по бонусам за стаж&quot;;</span>
+        }
+<span class="fc" id="L366">        return &quot;История начислений&quot;;</span>
+    }
+
+    private LocalDate parseDate(String value) {
+<span class="pc bpc" id="L370" title="1 of 4 branches missed.">        return value == null || value.isBlank() ? null : LocalDate.parse(value);</span>
+    }
+
+    private String csv(String value) {
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L375">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L377">        return '&quot;' + value.replace(&quot;\&quot;&quot;, &quot;\&quot;\&quot;&quot;) + '&quot;';</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
